@@ -1065,20 +1065,20 @@
 .sl-hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 2px 2px, rgba(7,0,143,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
 .sl-hero-inner { max-width: 960px; margin: 0 auto; text-align: center; }
 .sl-hero h1 { margin-bottom: 32px; font-size: clamp(48px, 7vw, 76px); line-height: 1.0; letter-spacing: -0.05em; font-weight: 800; color: #07008F; }
-.sl-hero p { font-size: 22px; color: #475569; max-width: 800px; margin: 0 auto 48px; line-height: 1.5; font-weight: 400; }
+.sl-hero p { font-size: 18px; color: #475569; max-width: 800px; margin: 0 auto 48px; line-height: 1.6; font-weight: 400; }
 .sl-hero .eyebrow { margin-bottom: 24px; justify-content: center; opacity: 0.8; font-weight: 600; letter-spacing: 0.2em; }
 .sl-hero .eyebrow::before { display: none; }
 
 .sl-hero-actions { display: flex; justify-content: center; gap: 20px; align-items: center; }
-.sl-hero-btn { display: inline-flex; align-items: center; gap: 12px; background: #07008F; color: #fff; padding: 18px 36px; border-radius: 4px; font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 700; transition: all 0.3s var(--ease); text-decoration: none; box-shadow: 0 10px 30px -10px rgba(7,0,143,0.3); }
-.sl-hero-btn:hover { background: #4A9FD8; transform: translateY(-2px); box-shadow: 0 15px 35px -10px rgba(74,159,216,0.4); }
-.sl-hero-link { font-size: 15px; font-weight: 600; color: #07008F; text-decoration: none; border-bottom: 1px solid rgba(7,0,143,0.2); transition: all 0.2s; }
-.sl-hero-link:hover { border-color: #4A9FD8; color: #4A9FD8; }
+.sl-hero-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--accent); color: #fff; padding: 18px 36px; border-radius: 10px; font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 700; transition: all var(--dur-smooth) var(--ease-smooth); text-decoration: none; box-shadow: 0 8px 24px -8px rgba(74,159,216,.55); }
+.sl-hero-btn:hover { background: #07008F; transform: translateY(-2px); box-shadow: 0 14px 30px -8px rgba(74,159,216,.7); }
+.sl-hero-link { font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: gap var(--dur-fast) var(--ease-in-out); }
+.sl-hero-link:hover { gap: 10px; color: #07008F; }
 
 /* Section Overrides */
 .sl-section-head { margin-bottom: 80px; }
-.sl-section-head h2 { font-size: clamp(32px, 4vw, 48px); margin-bottom: 20px; max-width: 800px; }
-.sl-section-head p { font-size: 19px; color: #475569; max-width: 680px; line-height: 1.6; }
+.sl-section-head h2 { font-size: clamp(30px, 3.6vw, 46px); margin-bottom: 20px; max-width: 800px; }
+.sl-section-head p { font-size: 18px; color: #475569; max-width: 680px; line-height: 1.6; }
 
 /* Solution Row Layouts */
 .sl-solution-row { display: grid; gap: 64px; margin-bottom: 120px; align-items: start; }
@@ -1086,14 +1086,14 @@
 .sl-split-1-1 { grid-template-columns: 1fr 1fr; }
 .sl-full-width { grid-template-columns: 1fr; }
 
-.sl-text-block h3 { font-size: 32px; margin-bottom: 24px; color: #07008F; font-weight: 800; letter-spacing: -0.02em; }
-.sl-text-block p { font-size: 17px; color: #475569; margin-bottom: 32px; line-height: 1.7; max-width: 620px; }
-.sl-use-case { font-size: 14px; font-weight: 600; color: #475569; padding: 16px 20px; background: #F8FAFC; border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; margin-bottom: 32px; }
+.sl-text-block h3 { font-size: clamp(24px, 3vw, 32px); margin-bottom: 24px; color: #07008F; font-weight: 800; letter-spacing: -0.02em; }
+.sl-text-block p { font-size: 16px; color: #475569; margin-bottom: 32px; line-height: 1.65; max-width: 620px; }
+.sl-use-case { font-size: 14px; font-weight: 600; color: #475569; padding: 16px 20px; background: #F8FAFC; border-left: 3px solid var(--accent); border-radius: 0 var(--rad) var(--rad) 0; margin-bottom: 32px; }
 
 /* Metrics Grid - Premium Tech Look */
 .sl-metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-.sl-metric-card { padding: 32px 24px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px; transition: all 0.3s; }
-.sl-metric-card:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.sl-metric-card { padding: 32px 24px; background: #FFFFFF; border: 1px solid var(--line); border-radius: var(--rad); transition: all var(--dur-smooth) var(--ease-smooth); }
+.sl-metric-card:hover { border-color: var(--accent); box-shadow: var(--shadow); transform: translateY(-4px); }
 .sl-metric-val { display: block; font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: #07008F; line-height: 1; margin-bottom: 8px; letter-spacing: -0.03em; }
 .sl-metric-label { display: block; font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
 .sl-metric-sub { display: block; font-size: 12px; color: #94A3B8; margin-top: 4px; }
@@ -1110,13 +1110,13 @@
 .sl-cred-text { font-size: 13px; font-weight: 700; color: #07008F; text-transform: uppercase; letter-spacing: 0.05em; }
 
 .sl-app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
-.sl-app-card { background: #FFFFFF; border: 1px solid var(--line); padding: 32px; border-radius: 4px; transition: all 0.3s; position: relative; overflow: hidden; }
-.sl-app-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow-sm); }
-.sl-app-card h4 { font-size: 20px; color: #07008F; margin-bottom: 16px; font-weight: 800; letter-spacing: -0.01em; }
+.sl-app-card { background: #FFFFFF; border: 1px solid var(--line); padding: 32px; border-radius: var(--rad); transition: all var(--dur-smooth) var(--ease-smooth); position: relative; overflow: hidden; }
+.sl-app-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: var(--shadow); }
+.sl-app-card h4 { font-size: 18px; color: #07008F; margin-bottom: 16px; font-weight: 700; letter-spacing: -0.01em; }
 .sl-app-card p { font-size: 14px; color: #475569; line-height: 1.6; margin-bottom: 24px; }
 
 .sl-app-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-.sl-app-chip { font-size: 10px; font-weight: 700; color: var(--accent); background: #F0F9FF; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+.sl-app-chip { font-size: 10px; font-weight: 700; color: var(--accent); background: #F0F9FF; padding: 4px 10px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.05em; }
 
 .sl-app-trust { font-size: 11px; font-weight: 600; color: #94A3B8; display: flex; align-items: center; gap: 6px; padding-top: 16px; border-top: 1px solid #F1F5F9; }
 .sl-app-trust svg { color: #CBD5E1; }
@@ -1140,8 +1140,8 @@
 }
 @media(max-width: 768px) {
   .sl-hero { padding: 120px 0 80px; }
-  .sl-hero h1 { font-size: 40px; }
-  .sl-hero p { font-size: 18px; }
+  .sl-hero h1 { font-size: clamp(28px, 7vw, 40px); }
+  .sl-hero p { font-size: 16px; }
   .sl-hero-actions { flex-direction: column; align-items: stretch; max-width: 300px; margin: 0 auto; }
 }
 </style>
@@ -1253,10 +1253,10 @@
         <h3>Fiber Link Monitoring & Rerouting</h3>
         <p>Maintain continuous corridor visibility and prevent service downtime. Our automated monitoring suite combines live OTDR analytics with high-speed optical switching to detect cable cuts and micro-bends in under 10ms.</p>
         <ul class="sl-feat-list" style="margin-top: -12px; margin-bottom: 32px;">
-          <li class="sl-feat-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Automated fault localization via live GIS mapping</li>
-          <li class="sl-feat-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Event-triggered optical path rerouting</li>
+          <li class="sl-feat-item">Automated fault localization via live GIS mapping</li>
+          <li class="sl-feat-item">Event-triggered optical path rerouting</li>
         </ul>
-        <a href="contact.html?inquiry=Monitoring" class="btn btn-outline" style="padding: 14px 28px; border-radius: 4px;">Inquire About System Deployment</a>
+        <a href="contact.html?inquiry=Monitoring" class="btn btn-outline" style="padding: 14px 28px;">Inquire About System Deployment</a>
       </div>
       <div class="sl-metrics-grid">
         <div class="sl-metric-card" style="background: #F8FAFC;">
@@ -1407,13 +1407,13 @@
 <!-- CTA -->
 <section class="section" style="padding-top:20px; padding-bottom:120px">
   <div class="container">
-    <div style="background:#FFFFFF; border:1px solid var(--line); padding:80px 40px; text-align:center; max-width:960px; margin:0 auto; box-shadow:var(--shadow-sm); border-radius:4px">
+    <div style="background:#FFFFFF; border:1px solid var(--line); padding:80px 40px; text-align:center; max-width:960px; margin:0 auto; box-shadow:var(--shadow-sm); border-radius:var(--rad)">
       <div class="eyebrow" style="justify-content:center">ENGINEERING CONSULTATION</div>
       <h2 style="color:#07008F">Technical feasibility and infrastructure planning.</h2>
-      <p style="font-size:19px;color:#475569;margin:16px auto 40px; max-width:720px">We work alongside lead contractors and network architects to provide BOM validation, feasibility mapping, and custom assembly specifications for critical infrastructure deployments.</p>
+      <p style="font-size:18px;color:#475569;margin:16px auto 40px; max-width:720px">We work alongside lead contractors and network architects to provide BOM validation, feasibility mapping, and custom assembly specifications for critical infrastructure deployments.</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
         <a class="sl-hero-btn" href="contact.html?inquiry=Engineering+Consultation">Consult with our Team &rarr;</a>
-        <a class="btn btn-outline" href="https://wa.me/918419916460?text=Hi, I would like to discuss a technical infrastructure project." target="_blank" rel="noopener" style="padding:16px 28px; border-radius:4px">Technical Inquiry (WhatsApp)</a>
+        <a class="btn btn-outline" href="https://wa.me/918419916460?text=Hi, I would like to discuss a technical infrastructure project." target="_blank" rel="noopener" style="padding:16px 28px">Technical Inquiry (WhatsApp)</a>
       </div>
     </div>
   </div>
