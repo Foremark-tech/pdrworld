@@ -128,7 +128,7 @@ textarea:focus {
     padding: 13px 20px;
     border-radius: 99px;
     z-index: 998;
-    box-shadow: 0 8px 32px -4px rgba(225,29,72,0.5);
+    box-shadow: 0 8px 32px -4px rgba(74,159,216,0.5);
     -webkit-tap-highlight-color: transparent;
   }
 }
@@ -579,7 +579,7 @@ img[loading="lazy"] {
 
 /* ─── 18. SELECTION COLOR ─── */
 ::selection {
-  background: rgba(225,29,72,0.2);
+  background: rgba(74,159,216,0.2);
   color: inherit;
 }
 
@@ -598,10 +598,7 @@ select {
   appearance: none;
 }
 
-/* ─── 20. LOADING STATE ─── */
-#loadingScreen {
-  will-change: opacity;
-}
+/* ─── 20. CANVAS STATE ─── */
 #fiberCanvas {
   will-change: transform;
   image-rendering: auto;
