@@ -1,110 +1,100 @@
-# PDR World — Static Website Redesign (v2)
+# PDR World — Enterprise B2B Website
 
-Single-file, premium B2B industrial website for **PDR Videotronics India Pvt. Ltd.** (PDR World), a Mumbai-based manufacturer of active and passive fiber optic infrastructure since 1985.
-
-This redesign replaces the earlier brochure-style page with a complete, conversion-focused enterprise site that preserves every important fact from the original [pdrworld.com](https://pdrworld.com).
+Premium multi-page B2B website for **PDR Videotronics India Pvt. Ltd.** — a Mumbai-based ISO 9001:2015 certified manufacturer of fiber optic infrastructure since 1985.
 
 ---
 
-## ✅ Currently Implemented Features
+## Production Files
 
-### Information architecture
-- Sticky desktop header with **6-category Products mega-menu** (Passive · Active · Cable Management · Test & Measuring · Specialty · Tools)
-- Sticky **WhatsApp icon** + **Request Quote** CTA in nav
-- Full-screen **mobile hamburger overlay** with collapsible Products submenu
-- Floating mobile **"Request Engineering Consultation"** CTA bar
-- Smooth-scroll anchor navigation; scrolled-header background fade
-- Section reveal animations (IntersectionObserver) with staggered delays
-- Honest, animated stat counters (40+ years · 3,000+ buyers · 15+ countries · 50+ product families)
+| File | Purpose |
+|------|---------|
+| `index.html` | Homepage — scrollytelling hero, product categories, stats, CTA bands |
+| `products.html` | Full product catalogue — 50+ families, sticky nav, detail drawer, RFQ flow |
+| `about.html` | Company story — 40-year timeline, manufacturing, certifications |
+| `solutions.html` | Enterprise solutions — DAS, DTS, FTTx, fiber monitoring |
+| `resources.html` | Support & partners — training, factory setup, channel programs |
+| `contact.html` | Contact & RFQ — structured inquiry form, maps, direct channels |
+| `404.html` | Branded error page with recovery links |
+| `admin.html` | Internal dashboard prototype (not public-facing) |
 
-### Content sections (in order)
-1. **Hero** — Mumbai-engineered headline · live production indicator · twin CTAs
-2. **Trust strip** — 7 buyer-segment trust signals
-3. **Stats bar** — 4 verifiable claims with sub-context
-4. **Industries served** (8 cards) — Telecom · Defence · Data Centres · 5G · Metro & Railway · Power · FTTH · Broadcast
-5. **Product catalogue** — 54 real products extracted from the old site, filterable by category, with live full-text search and prefill of RFQ on click
-6. **Why PDR** (6 differentiator cards) — Engineering · Quality · Speed · Scale · Support · Compliance
-7. **Manufacturing capability** — narrative + 3-image production grid + 4-point capability list
-8. **Compliance** (5 badges) — ISO 9001:2015 · RoHS · REACH · MIL-STD · TEC
-9. **Services & Resources** (6 cards) — Tech support · Custom mfg · Same-day shipping · Channel partner · Setup-a-factory · Training
-10. **Contact / RFQ** — both Mumbai addresses, both phones, WhatsApp deep-link, structured RFQ form (name, email, company, country, category, buyer-type, BoM textarea)
-11. **Footer** — 5-column layout with full product taxonomy, all industries, full resource list, both addresses, both phones, social links (LinkedIn, Facebook, Instagram, YouTube), GSTIN, dynamic year
+## Assets
 
-### Trust & accuracy upgrades
-- Both real Mumbai locations preserved: **HQ — 99 Old Prabhadevi Rd, 400025**; **Mfg — Filmcity Complex, Goregaon East, 400065**
-- Both phones (24306494, 24309536) + WhatsApp (+91 84199 16460)
-- Real social handles (LinkedIn / Facebook / Instagram / YouTube) from old site
-- GSTIN preserved: 27AAACP2446G1ZL
-- Removed unverifiable claims ("200 skilled operators", "British Certifications Inc")
+| File | Purpose |
+|------|---------|
+| `styles.css` | Shared design system — all design tokens, components, utilities |
+| `phase5-polish.css` | UX polish layer — mobile, accessibility, micro-interactions |
+| `favicon.svg` | PDR brand mark |
+| `frames/` | Homepage scrollytelling animation frames (240 JPGs) |
+| `robots.txt` | Search engine directives |
+| `sitemap.xml` | XML sitemap for crawlers |
 
-### Technical
-- Single self-contained `index.html` (no build step, no frameworks)
-- Google Fonts only (Inter + Manrope)
-- Inline SVG product icons for every category — no external icon CDN
-- Custom-rendered product cards (driven by JS data array → easy maintenance)
-- Fully responsive: desktop / tablet / mobile breakpoints at 1100 / 900 / 560 px
-- `prefers-reduced-motion` honored
-- Full keyboard accessibility (focus rings, semantic landmarks, ARIA labels)
+## Architecture
 
----
+- **Static HTML** — no build step, no frameworks, no dependencies
+- **Google Fonts** — Inter (body) + Manrope (display)
+- **Inline SVG** icons — no external icon CDN
+- **JS data-driven** product cards with detail drawer
+- **Shared header/footer** baked into each page
+- **Phase 5 CSS** layer for responsive polish and accessibility
 
-## 🌐 Functional URIs / Anchors
+## Design System
 
-| URI | Purpose |
-|---|---|
-| `/` or `#top` | Home / hero |
-| `#industries` | Industries served |
-| `#products` | Product catalogue |
-| `#products` + `?cat=passive\|active\|cable\|test\|specialty\|tools` (via mega-menu) | Filtered category view |
-| `#why` | Why PDR / differentiators |
-| `#capabilities` | Manufacturing capability |
-| `#compliance` | Certifications |
-| `#resources` | Services & resources |
-| `#contact` | Contact + RFQ form |
-| `tel:+912224306494` / `tel:+912224309536` | Direct phone |
-| `mailto:info@pdrworld.com` | Email |
-| `https://wa.me/918419916460` | WhatsApp |
+| Token | Value |
+|-------|-------|
+| Background | `#09090B` (dark) |
+| Accent | `#E11D48` (crimson) |
+| Surface | `#FFFFFF` / `#FAFAFA` |
+| Typography | Manrope 800/700 (display), Inter 400–600 (body) |
+| Radius | 14px cards, 99px pills, 18px panels |
+| Motion | `cubic-bezier(.16,1,.3,1)` — 250–700ms |
+| Grid | 1240px max-width |
 
-Each product card's "Request specs →" link prefills the RFQ textarea with the product name and a structured spec template.
+## Company Data (verified)
 
----
+- **PDR Videotronics India Pvt. Ltd.**
+- HQ: 99 Old Prabhadevi Road, Mumbai 400025
+- Factory: Filmcity Complex, Gen. A.K. Vaidya Marg, Goregaon East, Mumbai 400065
+- Phone: +91-22-24306494, +91-22-24309536
+- WhatsApp: +91 84199 16460
+- Email: info@pdrworld.com, sales@pdrworld.com
+- GSTIN: 27AAACP2446G1ZL
+- Founded: 1985
+- Certifications: ISO 9001:2015, RoHS, REACH, MIL-STD, TEC Approved
 
-## 🚧 Not Yet Implemented (recommended next iterations)
+## Conversion Systems
 
-1. **Per-product pages** — current site is single-page; the old site has 50+ standalone product pages with detailed specs.
-2. **Real backend RFQ submission** — form currently shows a confirmation alert only (static-site limitation; integrate with Formspree / a serverless function on deployment).
-3. **Live product imagery** — products use elegant SVG iconography. Replacing with real product photography (sourced from PDR's media library) would further elevate trust.
-4. **Case studies / project references** — old site has no public case studies; PDR could add 3–6 anonymised deployment stories.
-5. **Resources downloads** — datasheets, polishing guides, MPO polarity charts as downloadable PDFs.
-6. **Multi-language** — Hindi / Arabic / French for export markets.
-7. **Live OTDR / spec-finder tool** — interactive selector that recommends a SKU based on application + connector + distance.
-8. **Channel-partner login portal** — gated pricing & order-status portal.
-9. **Blog / Insights** — fiber-industry articles for SEO and authority.
+- Product drawer with 4-action CTA (Quote, Datasheet, WhatsApp, Engineer)
+- Page-aware floating mobile CTA
+- Footer quick-action row (RFQ, WhatsApp, Email)
+- Contact form with trust indicators and inline success state
+- WhatsApp deep-links with prefilled product context
 
----
+## SEO
 
-## 📊 Data Model
+Every page has:
+- Unique `<title>` and `<meta description>`
+- Canonical URL
+- Open Graph tags (og:title, og:description, og:image, og:url)
+- Twitter Card tags
+- Proper heading hierarchy
+- `lang="en"` attribute
 
-No backend tables / database used. Content sources:
+## Deployment
 
-- **Product catalogue (54 items)** — encoded as JS array `PRODUCTS` inside `index.html`. Schema: `{cat, name, desc, ic, tag}`. Categories: `passive | active | cable | test | specialty | tools`.
-- **Icon system** — inline SVG dictionary `ICONS` keyed by `ic` (patch, mpo, split, wave, fan, conn, loop, adapt, cable, rack, box, closure, sfp, olp, meter, laser, scope, mic, tool).
-- All other content is static HTML.
+Static site — upload all production files to any web server or CDN:
 
-To add or edit a product, modify the `PRODUCTS` array in the script tag at the bottom of `index.html`.
+```
+index.html, products.html, about.html, solutions.html,
+resources.html, contact.html, 404.html,
+styles.css, phase5-polish.css, favicon.svg,
+frames/, robots.txt, sitemap.xml
+```
 
----
-
-## 🎨 Design System
-
-- **Colors:** `#040A15` deep navy · `#F26B26` signal orange · `#FFFFFF` surface · `#F7F9FC` muted surface · `#10B981` live green
-- **Typography:** Manrope 800/700/600 (display) · Inter 400/500/600 (body)
-- **Radius:** 14 px (cards), 99 px (chips/pills), 18 px (hero panel)
-- **Motion:** 250–900 ms `cubic-bezier(.16,1,.3,1)` Apple-style easing
-- **Grid max-width:** 1240 px
+Exclude: `_build_tools/`, `_archive_products_final.html`, `admin.html`, `scratch/`, `.git/`
 
 ---
 
-## 🚀 Deployment
+## Development Archives
 
-To deploy and make the website live, please use the **Publish tab** — it will package `index.html` and deploy to a public URL automatically.
+Build scripts and intermediate files are archived in `_build_tools/` — not needed for production.
+

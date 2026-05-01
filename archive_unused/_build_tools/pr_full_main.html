@@ -1,0 +1,814 @@
+﻿<main>
+<style>
+/* ===== PRODUCTS PAGE SCOPED STYLES (pr- prefix) ===== */
+.pr-hero{background:var(--bg);color:#fff;padding:140px 0 72px}
+.pr-hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.pr-hero-stats{display:flex;gap:0;flex-wrap:wrap;margin-top:28px;font-size:13px;color:#A1A1AA}
+.pr-hero-stats span{padding:0 12px;border-left:1px solid rgba(255,255,255,.15)}
+.pr-hero-stats span:first-child{padding-left:0;border-left:none}
+.pr-cat-nav-panel{border-radius:18px;border:1px solid var(--line-dark);background:var(--bg-2);padding:28px}
+.pr-cat-pill{display:flex;align-items:center;justify-content:space-between;width:100%;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line-dark);padding:16px 20px;margin-bottom:8px;transition:all .2s;color:#fff;text-decoration:none}
+.pr-cat-pill:last-child{margin-bottom:0}
+.pr-cat-pill:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
+.pr-cat-pill-left{display:flex;align-items:center;gap:12px}
+.pr-cat-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.pr-cat-pill-name{font-family:'Manrope',sans-serif;font-weight:700;font-size:15px}
+.pr-cat-pill-right{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.pr-sticky-nav{position:sticky;top:76px;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:0}
+.pr-tab-row{display:flex;overflow-x:auto;gap:0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pr-tab-row::-webkit-scrollbar{display:none}
+.pr-tab{padding:16px 20px;font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s;text-decoration:none;display:block}
+.pr-tab:hover,.pr-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.pr-sub-head{border-left:3px solid var(--accent);padding-left:16px;margin-bottom:28px;font-size:22px}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pr-pcard{background:#fff;border:1px solid var(--line);border-radius:var(--rad);overflow:hidden;display:flex;flex-direction:column;transition:all .35s var(--ease)}
+.pr-pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#D4D4D8}
+.pr-pcard-art{height:140px;background:linear-gradient(135deg,#18181B,#27272A);display:grid;place-items:center;position:relative;overflow:hidden}
+.pr-pcard-art::after{content:"";position:absolute;width:80px;height:80px;background:radial-gradient(circle,rgba(225,29,72,.15),transparent);border-radius:50%}
+.pr-pcard-art svg{position:relative;z-index:1}
+.pr-prod-tag{position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.05em;z-index:2}
+.pr-pcard-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column}
+.pr-pcard-body h3{font-size:15px;margin-bottom:6px}
+.pr-pcard-body>p{font-size:13px;color:var(--muted);flex:1;margin-bottom:16px;line-height:1.55}
+.pr-spec-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pr-spec-pill{font-size:10px;font-weight:700;color:var(--muted);background:var(--surface-3);padding:3px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.05em}
+.pr-prod-cta{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--line)}
+.pr-prod-cta a{color:var(--accent);font-size:13px;font-weight:700;text-decoration:none;transition:color .2s}
+.pr-prod-cta a:hover{color:var(--accent-2)}
+.pr-drawer-backdrop{position:fixed;inset:0;background:rgba(9,9,11,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s}
+.pr-drawer-backdrop.open{opacity:1;pointer-events:auto}
+.pr-drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,95vw);background:var(--bg-2);z-index:2001;transform:translateX(100%);transition:transform .4s var(--ease);box-shadow:-10px 0 40px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+.pr-drawer.open{transform:translateX(0)}
+.pr-drawer-head{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;background:rgba(24,24,27,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.pr-drawer-head .pr-close{background:none;border:none;color:#A1A1AA;font-size:28px;cursor:pointer;line-height:1;transition:color .2s}
+.pr-drawer-head .pr-close:hover{color:var(--accent)}
+.pr-drawer-body{padding:32px 24px;overflow-y:auto;flex:1}
+.pr-drawer-img{height:220px;background:linear-gradient(135deg,#18181B,#27272A);border-radius:12px;display:grid;place-items:center;margin-bottom:28px}
+.pr-feat-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.pr-feat-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#fff}
+.pr-feat-list li svg{flex-shrink:0;margin-top:2px}
+.pr-spec-table{margin-bottom:28px;border-radius:8px;overflow:hidden}
+.pr-spec-trow{display:flex;padding:10px 14px;gap:12px}
+.pr-spec-trow:nth-child(odd){background:rgba(0,0,0,.3)}
+.pr-spec-tkey{font-weight:600;font-size:13px;width:160px;flex-shrink:0;color:#fff}
+.pr-spec-tval{font-size:13px;color:#A1A1AA;flex:1}
+.pr-app-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.pr-app-tag{background:rgba(255,255,255,.06);padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600;color:#A1A1AA;border:1px solid rgba(255,255,255,.08)}
+.pr-drawer-cta{border-top:1px solid rgba(255,255,255,.08);padding:20px 24px;background:var(--bg-2);display:flex;gap:12px}
+.pr-trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pr-trust-tile{background:rgba(255,255,255,.04);border:1px solid var(--line-dark);border-radius:var(--rad);padding:28px;text-align:center}
+.pr-trust-tile .stat-num{font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(28px,3vw,40px);color:#fff}
+.pr-trust-tile .stat-label{font-size:14px;color:#A1A1AA;margin-top:4px}
+.pr-drone-feature{background:rgba(255,255,255,.04);border:1px solid var(--line-dark);border-radius:20px;padding:48px;max-width:780px;margin:0 auto}
+.pr-drone-features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}
+.pr-drone-features li{font-size:14px;color:#A1A1AA;display:flex;align-items:flex-start;gap:8px}
+.pr-drone-features li svg{flex-shrink:0;margin-top:2px;color:var(--accent)}
+@media(max-width:900px){
+  .pr-hero-grid{grid-template-columns:1fr;gap:32px}
+  .pr-grid{grid-template-columns:repeat(2,1fr)}
+  .pr-drone-features{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .pr-grid{grid-template-columns:1fr}
+  .pr-hero-stats{flex-direction:column;gap:6px}
+  .pr-hero-stats span{border-left:none;padding-left:0}
+  .pr-drawer{width:100vw}
+  .pr-spec-trow{flex-direction:column;gap:4px}
+  .pr-spec-tkey{width:auto}
+  .pr-trust-grid{grid-template-columns:1fr}
+}
+</style>
+
+<!-- ===== SECTION 1: PAGE HERO ===== -->
+<section class="pr-hero">
+  <div class="container">
+    <div class="pr-hero-grid">
+      <div>
+        <div class="eyebrow">Product Catalogue &middot; 50+ Families</div>
+        <h1>The complete fibre optic stack. Made in Mumbai.</h1>
+        <p style="font-size:18px;color:#A1A1AA;margin-top:18px;max-width:520px">Active components, passive assemblies, cable management, and test equipment &mdash; manufactured and tested in-house since 1985.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px">
+          <a class="btn btn-primary" href="contact.html">Request a Quote</a>
+          <a class="btn btn-ghost" href="#active">Browse Catalogue &darr;</a>
+        </div>
+        <div class="pr-hero-stats">
+          <span>50+ Product Families</span>
+          <span>3,000+ Buyers</span>
+          <span>ISO 9001:2015</span>
+          <span>Ships Same Day</span>
+        </div>
+      </div>
+      <div class="pr-cat-nav-panel">
+        <a class="pr-cat-pill" href="#active"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Active Components</span></span><span class="pr-cat-pill-right">15+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#passive"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Passive Components</span></span><span class="pr-cat-pill-right">40+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#cable"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Cable Management Devices</span></span><span class="pr-cat-pill-right">12+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#test"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Test &amp; Measuring Equipment</span></span><span class="pr-cat-pill-right">10+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#drone"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Optical Fiber Drone</span></span><span class="pr-cat-pill-right"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: STICKY CATEGORY NAV ===== -->
+<nav class="pr-sticky-nav" id="prStickyNav">
+  <div class="container">
+    <div class="pr-tab-row">
+      <a class="pr-tab active" href="#active" data-target="active">Active Components</a>
+      <a class="pr-tab" href="#passive" data-target="passive">Passive Components</a>
+      <a class="pr-tab" href="#cable" data-target="cable">Cable Management</a>
+      <a class="pr-tab" href="#test" data-target="test">Test &amp; Measuring</a>
+      <a class="pr-tab" href="#drone" data-target="drone">Optical Fiber Drone</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== SECTION 3: ACTIVE COMPONENTS ===== -->
+<section class="section sec-muted reveal" id="active">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Active Components</div>
+      <h2>SFP Transceivers, OLP &amp; High-Speed Interfaces</h2>
+      <p>Manufactured and tested at our Mumbai facility. Compatible with major OEM switches, routers, and DWDM platforms.</p>
+    </div>
+
+    <h3 class="pr-sub-head">SFP Transceivers</h3>
+    <div class="pr-grid">
+
+      <div class="pr-pcard reveal" data-product="sfp-transceivers">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">SFP</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="3"/><rect x="4" y="20" width="6" height="8" rx="1"/><rect x="38" y="20" width="6" height="8" rx="1"/><line x1="14" y1="24" x2="34" y2="24"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Fiber Optic Transceivers (SFP)</h3>
+          <p>High performance and cost effective modules for serial optical data communication applications.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">Multi-Rate</span><span class="pr-spec-pill">Hot-Swappable</span><span class="pr-spec-pill">DOM Support</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('sfp-transceivers');return false">Inquire Now</a><a href="#" onclick="openDrawer('sfp-transceivers');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Other Active Components</h3>
+    <div class="pr-grid">
+
+      <div class="pr-pcard reveal" data-product="bypass-switch">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">Active</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="12" width="24" height="24" rx="4"/><path d="M18 24h12"/><path d="M24 18v12"/><circle cx="12" cy="24" r="3"/><circle cx="36" cy="24" r="3"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Bypass Switch</h3>
+          <p>Optical path control equipment which can automatic bypass the optical path in case the protected optical device is failure.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">Auto Bypass</span><span class="pr-spec-pill">Path Control</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('bypass-switch');return false">Inquire Now</a><a href="#" onclick="openDrawer('bypass-switch');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="olps">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">OLP</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="14" width="28" height="20" rx="3"/><path d="M16 24h16"/><path d="M24 19v10"/><circle cx="10" cy="24" r="2"/><circle cx="38" cy="24" r="2"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Optical Line Protection System</h3>
+          <p>Uses spare optical fiber from different route to build a backup path for network protection.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">Backup Path</span><span class="pr-spec-pill">Auto Switch</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('olps');return false">Inquire Now</a><a href="#" onclick="openDrawer('olps');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="dac">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">DAC</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="4" y="18" width="12" height="12" rx="2"/><rect x="32" y="18" width="12" height="12" rx="2"/><path d="M16 24h16" stroke-dasharray="4 2"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Direct Attached Cable (DAC)</h3>
+          <p>SFP-10G-DAC hot-swappable direct attach copper cable assembly (Twinax Cable) with SFP+ connectors.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">SFP+ 10G</span><span class="pr-spec-pill">Hot-Swappable</span><span class="pr-spec-pill">Twinax</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('dac');return false">Inquire Now</a><a href="#" onclick="openDrawer('dac');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="aoc">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">AOC</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="4" y="18" width="12" height="12" rx="2"/><rect x="32" y="18" width="12" height="12" rx="2"/><path d="M16 24c4-4 12 4 16 0"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Active Optical Cable (AOC)</h3>
+          <p>100G QSFP28 AOC assemblies offer a highly reliable and cost-effective alternative to transceiver assemblies.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">100G QSFP28</span><span class="pr-spec-pill">Up to 100m</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('aoc');return false">Inquire Now</a><a href="#" onclick="openDrawer('aoc');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="hd-sdi">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">HD-SDI</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="14" width="32" height="20" rx="3"/><circle cx="24" cy="24" r="5"/><line x1="14" y1="30" x2="34" y2="30"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>HD-SDI Optical Transceiver</h3>
+          <p>PDR8010SG SD/HD/3G-SDI broadcasting grade HD Transceiver which can interconvert SD/HD/3G-SDI signals.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">SD/HD/3G-SDI</span><span class="pr-spec-pill">Broadcast</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('hd-sdi');return false">Inquire Now</a><a href="#" onclick="openDrawer('hd-sdi');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="poe-injector">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">PoE</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="14" width="28" height="20" rx="3"/><path d="M20 20v8"/><path d="M28 20v8"/><path d="M24 17v14"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>PoE Injector</h3>
+          <p>Power over Ethernet injector for optical networking and broadcasting applications.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">PoE</span><span class="pr-spec-pill">Networking</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('poe-injector');return false">Inquire Now</a><a href="#" onclick="openDrawer('poe-injector');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 4: PASSIVE COMPONENTS ===== -->
+<section class="section reveal" id="passive">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Passive Components</div>
+      <h2>Cable Assemblies, Adapters, WDM &amp; Splitters</h2>
+      <p>Precision-terminated and interferometry-tested. Available in standard and custom configurations.</p>
+    </div>
+
+    <h3 class="pr-sub-head">Cable Assembly</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="cat6-patch-cord"><div class="pr-pcard-art"><span class="pr-prod-tag">CAT6</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 24h24"/><rect x="6" y="20" width="8" height="8" rx="2"/><rect x="34" y="20" width="8" height="8" rx="2"/></svg></div><div class="pr-pcard-body"><h3>CAT 6 Patch Cord</h3><p>High-speed copper patch cord for data networking applications.</p><div class="pr-spec-row"><span class="pr-spec-pill">Cat 6</span><span class="pr-spec-pill">RJ45</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('cat6-patch-cord');return false">Inquire Now</a><a href="#" onclick="openDrawer('cat6-patch-cord');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="cpri-patchcord"><div class="pr-pcard-art"><span class="pr-prod-tag">CPRI</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 24h24"/><circle cx="10" cy="24" r="4"/><circle cx="38" cy="24" r="4"/></svg></div><div class="pr-pcard-body"><h3>CPRI Patchcord</h3><p>Outdoor waterproof fiber optic assemblies with waterproof connectors of ODVA/IP/FX/PDLC/NSN.</p><div class="pr-spec-row"><span class="pr-spec-pill">Outdoor</span><span class="pr-spec-pill">Waterproof</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('cpri-patchcord');return false">Inquire Now</a><a href="#" onclick="openDrawer('cpri-patchcord');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="fanout-patch-cords"><div class="pr-pcard-art"><span class="pr-prod-tag">MPO</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="6" y="20" width="10" height="8" rx="2"/><path d="M16 22l8-6"/><path d="M16 24h16"/><path d="M16 26l8 6"/><circle cx="38" cy="16" r="3"/><circle cx="38" cy="24" r="3"/><circle cx="38" cy="32" r="3"/></svg></div><div class="pr-pcard-body"><h3>FanOut Patch Cords</h3><p>MTP/MPO high-density fiber connector assemblies that breakout multi-fiber connections.</p><div class="pr-spec-row"><span class="pr-spec-pill">MTP/MPO</span><span class="pr-spec-pill">High-Density</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('fanout-patch-cords');return false">Inquire Now</a><a href="#" onclick="openDrawer('fanout-patch-cords');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="fo-patchcords"><div class="pr-pcard-art"><span class="pr-prod-tag">Fiber</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M8 24h32"/><circle cx="8" cy="24" r="3"/><circle cx="40" cy="24" r="3"/></svg></div><div class="pr-pcard-body"><h3>Fiber Optic Patch Cords &amp; Pigtails</h3><p>Broadest choice of patchcords tested utilising the industry's latest interferometric equipment.</p><div class="pr-spec-row"><span class="pr-spec-pill">SM/MM</span><span class="pr-spec-pill">IL &lt; 0.3dB</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('fo-patchcords');return false">Inquire Now</a><a href="#" onclick="openDrawer('fo-patchcords');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="loopback"><div class="pr-pcard-art"><span class="pr-prod-tag">Test</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M14 24a10 10 0 0 1 20 0 10 10 0 0 1-20 0"/></svg></div><div class="pr-pcard-body"><h3>Loop Back Patch Cord</h3><p>Used in fiber optic network testing and diagnostics applications.</p><div class="pr-spec-row"><span class="pr-spec-pill">Testing</span><span class="pr-spec-pill">Diagnostics</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('loopback');return false">Inquire Now</a><a href="#" onclick="openDrawer('loopback');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="mode-conditioning"><div class="pr-pcard-art"><span class="pr-prod-tag">MCP</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M8 24c8-8 24 8 32 0"/></svg></div><div class="pr-pcard-body"><h3>Mode Conditioning Patchcord</h3><p>Gigabit Launch Patchcord used in longwave/long haul fiber optic applications.</p><div class="pr-spec-row"><span class="pr-spec-pill">Long Haul</span><span class="pr-spec-pill">Gigabit</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('mode-conditioning');return false">Inquire Now</a><a href="#" onclick="openDrawer('mode-conditioning');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="mpo-assembly"><div class="pr-pcard-art"><span class="pr-prod-tag">MPO</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="18" width="14" height="12" rx="2"/><rect x="26" y="18" width="14" height="12" rx="2"/><path d="M22 24h4"/></svg></div><div class="pr-pcard-body"><h3>MPO Cable Assembly</h3><p>High-density multi-fiber connector system built around precision molded MT ferrule.</p><div class="pr-spec-row"><span class="pr-spec-pill">Multi-Fiber</span><span class="pr-spec-pill">MT Ferrule</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('mpo-assembly');return false">Inquire Now</a><a href="#" onclick="openDrawer('mpo-assembly');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="rapid-push"><div class="pr-pcard-art"><span class="pr-prod-tag">FTTx</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M10 24h28"/><path d="M34 20l4 4-4 4"/></svg></div><div class="pr-pcard-body"><h3>Rapid Push Cable Assembly</h3><p>FTTXsmart pushable preterminated fiber optic drop solution for fast deployment.</p><div class="pr-spec-row"><span class="pr-spec-pill">Pushable</span><span class="pr-spec-pill">Pre-terminated</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('rapid-push');return false">Inquire Now</a><a href="#" onclick="openDrawer('rapid-push');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="smpte-assembly"><div class="pr-pcard-art"><span class="pr-prod-tag">SMPTE</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="3"/><circle cx="18" cy="24" r="3"/><circle cx="30" cy="24" r="3"/></svg></div><div class="pr-pcard-body"><h3>SMPTE Cable Assembly</h3><p>Broadest range of ruggedized and dirt protected cabling options for HDTV infrastructure.</p><div class="pr-spec-row"><span class="pr-spec-pill">HDTV</span><span class="pr-spec-pill">Ruggedized</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('smpte-assembly');return false">Inquire Now</a><a href="#" onclick="openDrawer('smpte-assembly');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Adapters</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="bare-fiber-adapter"><div class="pr-pcard-art"><span class="pr-prod-tag">Adapter</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="16" y="14" width="16" height="20" rx="3"/><line x1="8" y1="24" x2="16" y2="24"/><line x1="32" y1="24" x2="40" y2="24"/></svg></div><div class="pr-pcard-body"><h3>Bare Fiber Adapter</h3><p>Used as a medium to link the bare optical fiber to fiber optic equipment.</p><div class="pr-spec-row"><span class="pr-spec-pill">Bare Fiber</span><span class="pr-spec-pill">SM/MM</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('bare-fiber-adapter');return false">Inquire Now</a><a href="#" onclick="openDrawer('bare-fiber-adapter');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="hybrid-adapter"><div class="pr-pcard-art"><span class="pr-prod-tag">Hybrid</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="14" width="20" height="20" rx="3"/><line x1="6" y1="24" x2="14" y2="24"/><line x1="34" y1="24" x2="42" y2="24"/><line x1="24" y1="14" x2="24" y2="34"/></svg></div><div class="pr-pcard-body"><h3>SC/APC to SC/UPC Adapter</h3><p>Hybrid fixed type adapter converter. Single Mode 9/125, No Loss 0dB.</p><div class="pr-spec-row"><span class="pr-spec-pill">SM 9/125</span><span class="pr-spec-pill">0dB Loss</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('hybrid-adapter');return false">Inquire Now</a><a href="#" onclick="openDrawer('hybrid-adapter');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Attenuator</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="attenuator"><div class="pr-pcard-art"><span class="pr-prod-tag">Attenuator</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M8 24h32"/><path d="M18 18l6 6-6 6"/><path d="M30 18l-6 6 6 6"/></svg></div><div class="pr-pcard-body"><h3>Variable Fiber Attenuator</h3><p>Buildout attenuators providing superior performance for all single-mode in-line attenuation requirements.</p><div class="pr-spec-row"><span class="pr-spec-pill">1310/1490/1550nm</span><span class="pr-spec-pill">SM</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('attenuator');return false">Inquire Now</a><a href="#" onclick="openDrawer('attenuator');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">MUX / DEMUX</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="cwdm"><div class="pr-pcard-art"><span class="pr-prod-tag">CWDM</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="12" width="20" height="24" rx="3"/><line x1="6" y1="20" x2="14" y2="20"/><line x1="6" y1="28" x2="14" y2="28"/><line x1="34" y1="24" x2="42" y2="24"/></svg></div><div class="pr-pcard-body"><h3>CWDM Mux / DeMux Module</h3><p>Cost-effective network solution for connecting and linking together multiple data centers.</p><div class="pr-spec-row"><span class="pr-spec-pill">CWDM</span><span class="pr-spec-pill">Multi-Channel</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('cwdm');return false">Inquire Now</a><a href="#" onclick="openDrawer('cwdm');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="dwdm"><div class="pr-pcard-art"><span class="pr-prod-tag">DWDM</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="12" width="20" height="24" rx="3"/><line x1="6" y1="18" x2="14" y2="18"/><line x1="6" y1="24" x2="14" y2="24"/><line x1="6" y1="30" x2="14" y2="30"/><line x1="34" y1="24" x2="42" y2="24"/></svg></div><div class="pr-pcard-body"><h3>DWDM Mux/DeMux Module</h3><p>Most robust and low-cost bandwidth upgrade for currently deployed fiber infrastructure.</p><div class="pr-spec-row"><span class="pr-spec-pill">DWDM</span><span class="pr-spec-pill">Dense WDM</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('dwdm');return false">Inquire Now</a><a href="#" onclick="openDrawer('dwdm');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="plc-splitter"><div class="pr-pcard-art"><span class="pr-prod-tag">Splitter</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><line x1="8" y1="24" x2="20" y2="24"/><path d="M20 24l10-8"/><path d="M20 24l10 0"/><path d="M20 24l10 8"/></svg></div><div class="pr-pcard-body"><h3>PLC Splitter</h3><p>High-quality splitters designed for long-term reliability and superior performance.</p><div class="pr-spec-row"><span class="pr-spec-pill">PLC</span><span class="pr-spec-pill">1xN / 2xN</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('plc-splitter');return false">Inquire Now</a><a href="#" onclick="openDrawer('plc-splitter');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Connectors</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="field-connector"><div class="pr-pcard-art"><span class="pr-prod-tag">Field</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="16" width="20" height="16" rx="2"/><line x1="8" y1="24" x2="14" y2="24"/><line x1="34" y1="24" x2="40" y2="24"/></svg></div><div class="pr-pcard-body"><h3>Fiber Optic Connector, Field Installable</h3><p>Fast Field Assembly Optical Connector designed to manage on-site fiber connections with ease of maintenance.</p><div class="pr-spec-row"><span class="pr-spec-pill">Field Install</span><span class="pr-spec-pill">Fast Assembly</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('field-connector');return false">Inquire Now</a><a href="#" onclick="openDrawer('field-connector');return false">Details &rarr;</a></div></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 5: CABLE MANAGEMENT DEVICES ===== -->
+<section class="section sec-muted reveal" id="cable">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Cable Management Devices</div>
+      <h2>Termination Boxes, ODFs &amp; Splice Closures</h2>
+      <p>Indoor and outdoor enclosures built for telecom, ISP, and data centre installations.</p>
+    </div>
+
+    <h3 class="pr-sub-head">Indoor Termination</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="rack-mount-fms"><div class="pr-pcard-art"><span class="pr-prod-tag">Rack</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="6" y="16" width="36" height="16" rx="2"/><line x1="12" y1="24" x2="16" y2="24"/><line x1="20" y1="24" x2="24" y2="24"/><line x1="28" y1="24" x2="32" y2="24"/><circle cx="8" cy="20" r="1"/><circle cx="8" cy="28" r="1"/><circle cx="40" cy="20" r="1"/><circle cx="40" cy="28" r="1"/></svg></div><div class="pr-pcard-body"><h3>Rack Mount Fiber Management System</h3><p>19&rdquo; Rack Mount fiber-optic enclosures help deliver modularity, flexibility and customization in design.</p><div class="pr-spec-row"><span class="pr-spec-pill">19" Rack</span><span class="pr-spec-pill">Modular</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('rack-mount-fms');return false">Inquire Now</a><a href="#" onclick="openDrawer('rack-mount-fms');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="htb"><div class="pr-pcard-art"><span class="pr-prod-tag">HTB</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="12" width="20" height="24" rx="2"/><path d="M14 24h20"/><circle cx="24" cy="18" r="2"/></svg></div><div class="pr-pcard-body"><h3>Home Termination Box (HTB)</h3><p>Installed inside the customer's premises to provide fiber termination points and housing.</p><div class="pr-spec-row"><span class="pr-spec-pill">FTTH</span><span class="pr-spec-pill">Indoor</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('htb');return false">Inquire Now</a><a href="#" onclick="openDrawer('htb');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="wall-mount"><div class="pr-pcard-art"><span class="pr-prod-tag">Wall</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="8" width="28" height="32" rx="3"/><line x1="24" y1="8" x2="24" y2="40"/><circle cx="20" cy="24" r="1"/><circle cx="28" cy="24" r="1"/></svg></div><div class="pr-pcard-body"><h3>Optical Fiber Wall Mount Enclosure</h3><p>Two door fibre optic wall mounted enclosures provide a cost effective, secure method of terminating fiber.</p><div class="pr-spec-row"><span class="pr-spec-pill">Wall Mount</span><span class="pr-spec-pill">Secure</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('wall-mount');return false">Inquire Now</a><a href="#" onclick="openDrawer('wall-mount');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="fdb"><div class="pr-pcard-art"><span class="pr-prod-tag">FDB</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="10" width="24" height="28" rx="2"/><line x1="12" y1="18" x2="36" y2="18"/><line x1="24" y1="18" x2="24" y2="38"/></svg></div><div class="pr-pcard-body"><h3>Fiber Distribution Box (FDB)</h3><p>Compact termination box used at the building premises such as residence, offices etc.</p><div class="pr-spec-row"><span class="pr-spec-pill">Compact</span><span class="pr-spec-pill">Distribution</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('fdb');return false">Inquire Now</a><a href="#" onclick="openDrawer('fdb');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="cat6-panel"><div class="pr-pcard-art"><span class="pr-prod-tag">Panel</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="6" y="16" width="36" height="16" rx="2"/><line x1="12" y1="20" x2="16" y2="20"/><line x1="12" y1="28" x2="16" y2="28"/><line x1="20" y1="20" x2="24" y2="20"/><line x1="20" y1="28" x2="24" y2="28"/><line x1="28" y1="20" x2="32" y2="20"/><line x1="28" y1="28" x2="32" y2="28"/></svg></div><div class="pr-pcard-body"><h3>CAT 6 Patch Panel</h3><p>Cat 6 24 Port Distribution Panel designed for High speed Network applications.</p><div class="pr-spec-row"><span class="pr-spec-pill">24 Port</span><span class="pr-spec-pill">Cat 6</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('cat6-panel');return false">Inquire Now</a><a href="#" onclick="openDrawer('cat6-panel');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Outdoor Termination</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="heat-shrink-closure"><div class="pr-pcard-art"><span class="pr-prod-tag">Closure</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 16h24a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4v-8a4 4 0 0 1 4-4z"/><path d="M8 20h32"/><path d="M8 28h32"/><line x1="20" y1="16" x2="20" y2="32"/><line x1="28" y1="16" x2="28" y2="32"/></svg></div><div class="pr-pcard-body"><h3>Heat Shrink Splice Closure</h3><p>Heat shrink sealing designed to be used in any environment aerial, pedestal, buried, manhole.</p><div class="pr-spec-row"><span class="pr-spec-pill">Heat Shrink</span><span class="pr-spec-pill">All-Environment</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('heat-shrink-closure');return false">Inquire Now</a><a href="#" onclick="openDrawer('heat-shrink-closure');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="odf"><div class="pr-pcard-art"><span class="pr-prod-tag">ODF</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="6" width="24" height="36" rx="2"/><line x1="12" y1="18" x2="36" y2="18"/><line x1="12" y1="30" x2="36" y2="30"/></svg></div><div class="pr-pcard-body"><h3>Optical Distribution Frames</h3><p>Multi-purpose wall mount fiberoptic enclosures built of high-quality ABS Plastic material.</p><div class="pr-spec-row"><span class="pr-spec-pill">ABS Plastic</span><span class="pr-spec-pill">Multi-purpose</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('odf');return false">Inquire Now</a><a href="#" onclick="openDrawer('odf');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="horizontal-closure"><div class="pr-pcard-art"><span class="pr-prod-tag">Splice</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="8"/><line x1="16" y1="16" x2="16" y2="32"/><line x1="32" y1="16" x2="32" y2="32"/><line x1="8" y1="24" x2="40" y2="24"/></svg></div><div class="pr-pcard-body"><h3>Fiber Optic Splitter Closure GJS 2016</h3><p>Closure adopts mechanical sealing structure with oval shaped cable port entrances in base.</p><div class="pr-spec-row"><span class="pr-spec-pill">Mechanical Seal</span><span class="pr-spec-pill">Outdoor</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('horizontal-closure');return false">Inquire Now</a><a href="#" onclick="openDrawer('horizontal-closure');return false">Details &rarr;</a></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 6: TEST & MEASURING EQUIPMENT ===== -->
+<section class="section reveal" id="test">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Test &amp; Measuring Equipment</div>
+      <h2>OTDR, Power Meters, Splicers &amp; Inspectors</h2>
+      <p>Professional-grade fiber test instruments manufactured and calibrated in-house.</p>
+    </div>
+
+    <h3 class="pr-sub-head">Power Meter</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="pon-power-meter"><div class="pr-pcard-art"><span class="pr-prod-tag">PON</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="8" width="20" height="32" rx="3"/><rect x="18" y="14" width="12" height="8" rx="1"/><circle cx="24" cy="30" r="3"/><circle cx="20" cy="26" r="1"/><circle cx="28" cy="26" r="1"/><circle cx="20" cy="34" r="1"/><circle cx="28" cy="34" r="1"/></svg></div><div class="pr-pcard-body"><h3>PON Power Meter</h3><p>Providing distinct power values for 1310 nm, 1490 nm and 1550 nm with pass through measurement.</p><div class="pr-spec-row"><span class="pr-spec-pill">1310/1490/1550nm</span><span class="pr-spec-pill">Pass-through</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('pon-power-meter');return false">Inquire Now</a><a href="#" onclick="openDrawer('pon-power-meter');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="mini-opm"><div class="pr-pcard-art"><span class="pr-prod-tag">Mini</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="16" y="10" width="16" height="28" rx="3"/><rect x="20" y="14" width="8" height="6" rx="1"/><circle cx="24" cy="28" r="4"/></svg></div><div class="pr-pcard-body"><h3>Mini Optical Power Meter</h3><p>Essential tool for all technicians installing or maintaining optical fiber networks.</p><div class="pr-spec-row"><span class="pr-spec-pill">Compact</span><span class="pr-spec-pill">Testing</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('mini-opm');return false">Inquire Now</a><a href="#" onclick="openDrawer('mini-opm');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="5in1-opm"><div class="pr-pcard-art"><span class="pr-prod-tag">5-in-1</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="8" width="24" height="32" rx="3"/><rect x="16" y="14" width="16" height="8" rx="1"/><circle cx="24" cy="30" r="4"/><line x1="18" y1="28" x2="20" y2="28"/><line x1="28" y1="28" x2="30" y2="28"/><line x1="18" y1="32" x2="20" y2="32"/><line x1="28" y1="32" x2="30" y2="32"/></svg></div><div class="pr-pcard-body"><h3>5 IN 1 Optical Power Meter</h3><p>Display Range 1310/1490/1550/1625: +10 to -70dBm, Accuracy +- 0.2 dB.</p><div class="pr-spec-row"><span class="pr-spec-pill">Multi-Wavelength</span><span class="pr-spec-pill">+-0.2dB Accuracy</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('5in1-opm');return false">Inquire Now</a><a href="#" onclick="openDrawer('5in1-opm');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">OTDR</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="mini-otdr"><div class="pr-pcard-art"><span class="pr-prod-tag">OTDR</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="12" width="28" height="24" rx="3"/><rect x="14" y="16" width="20" height="12" rx="1"/><circle cx="16" cy="32" r="1"/><circle cx="20" cy="32" r="1"/><circle cx="24" cy="32" r="1"/><circle cx="32" cy="32" r="2"/></svg></div><div class="pr-pcard-body"><h3>Mini OTDR PDR4402S</h3><p>On-Line Mini Pro-OTDR used for installation and maintenance of Optical Fiber Network especially in FTTx and Data Centers.</p><div class="pr-spec-row"><span class="pr-spec-pill">Pro-OTDR</span><span class="pr-spec-pill">FTTx/Data Center</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('mini-otdr');return false">Inquire Now</a><a href="#" onclick="openDrawer('mini-otdr');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Splicer</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="fusion-splicer"><div class="pr-pcard-art"><span class="pr-prod-tag">Splicer</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="14" width="24" height="20" rx="3"/><path d="M18 14V10h12v4"/><circle cx="24" cy="24" r="4"/><path d="M12 24H8"/><path d="M40 24h-4"/></svg></div><div class="pr-pcard-body"><h3>Fusion Splicer PDR618H</h3><p>Handheld, Small, Light. 8s splicing time, 26s tube heating time. 5800mAh pluggable Li-battery.</p><div class="pr-spec-row"><span class="pr-spec-pill">8s Splicing</span><span class="pr-spec-pill">5800mAh Battery</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('fusion-splicer');return false">Inquire Now</a><a href="#" onclick="openDrawer('fusion-splicer');return false">Details &rarr;</a></div></div></div>
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Endface Inspector</h3>
+    <div class="pr-grid">
+      <div class="pr-pcard reveal" data-product="easyget-wifi"><div class="pr-pcard-art"><span class="pr-prod-tag">WiFi</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="18" y="10" width="12" height="28" rx="2"/><path d="M22 10V6h4v4"/><circle cx="24" cy="18" r="3"/><circle cx="24" cy="30" r="1"/></svg></div><div class="pr-pcard-body"><h3>EasyGet WiFi Wireless Fiber Endface Microscope</h3><p>Inspect dirt and damage on fiber endfaces of optical connectors directly to prevent attenuation.</p><div class="pr-spec-row"><span class="pr-spec-pill">Wireless</span><span class="pr-spec-pill">Microscope</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('easyget-wifi');return false">Inquire Now</a><a href="#" onclick="openDrawer('easyget-wifi');return false">Details &rarr;</a></div></div></div>
+
+      <div class="pr-pcard reveal" data-product="easycheck-v2"><div class="pr-pcard-art"><span class="pr-prod-tag">Digital</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="12" width="28" height="24" rx="3"/><rect x="14" y="16" width="20" height="14" rx="1"/><path d="M20 40l4-4 4 4"/></svg></div><div class="pr-pcard-body"><h3>EasyCheck V2 Digital Fiber Endface Inspector</h3><p>Digital inspection of dirt and damage on fiber endface to resolve optical attenuation causes.</p><div class="pr-spec-row"><span class="pr-spec-pill">Digital</span><span class="pr-spec-pill">Inspection</span></div><div class="pr-prod-cta"><a href="#" onclick="openDrawer('easycheck-v2');return false">Inquire Now</a><a href="#" onclick="openDrawer('easycheck-v2');return false">Details &rarr;</a></div></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 7: OPTICAL FIBER DRONE ===== -->
+<section class="section sec-dark grid-bg reveal" id="drone">
+  <div class="container">
+    <div class="sec-head center">
+      <div class="eyebrow" style="justify-content:center">Specialty Products</div>
+      <h2>Optical Fiber Drone</h2>
+      <p>Next-generation aerial fiber deployment, inspection, and surveillance solutions.</p>
+    </div>
+
+    <div class="pr-drone-feature">
+      <div style="text-align:center;margin-bottom:32px">
+        <svg width="64" height="64" viewBox="0 0 48 48" fill="none" stroke="var(--accent)" stroke-width="1.5" style="margin:0 auto"><path d="M12 12l24 24M12 36l24-24"/><circle cx="12" cy="12" r="4"/><circle cx="36" cy="36" r="4"/><circle cx="12" cy="36" r="4"/><circle cx="36" cy="12" r="4"/><rect x="20" y="20" width="8" height="8" rx="2"/></svg>
+      </div>
+      <h3 style="text-align:center;font-size:24px;color:#fff;margin-bottom:16px">Aerial Fiber Deployment</h3>
+      <p style="text-align:center;color:#A1A1AA;font-size:16px">Engineered for rapid field deployment, remote infrastructure inspection, and secure surveillance across challenging terrains.</p>
+      
+      <ul class="pr-drone-features">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Rapid aerial deployment in inaccessible areas</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> High-resolution optical infrastructure inspection</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Real-time secure surveillance feed</li>
+      </ul>
+
+      <div style="display:flex;gap:16px;justify-content:center;margin-top:32px;flex-wrap:wrap">
+        <a class="btn btn-primary" href="#" onclick="openDrawer('drone');return false">Inquire Now</a>
+        <a class="btn btn-ghost" href="#" onclick="openDrawer('drone');return false">Download Datasheet</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 8: PRODUCT DETAIL SLIDE-IN PANEL ===== -->
+<div class="pr-drawer-backdrop" id="prBackdrop" onclick="closeDrawer()"></div>
+<div class="pr-drawer" id="prDrawer">
+  <div class="pr-drawer-head">
+    <div>
+      <div class="eyebrow" id="drawEyebrow" style="font-size:10px;margin-bottom:4px">Category</div>
+      <h3 id="drawTitle" style="font-size:18px;color:#fff;margin:0">Product Name</h3>
+    </div>
+    <button class="pr-close" onclick="closeDrawer()" aria-label="Close panel">&times;</button>
+  </div>
+  <div class="pr-drawer-body">
+    <div class="pr-drawer-img" id="drawImg">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="3"/></svg>
+    </div>
+    
+    <h4 style="color:#fff;font-size:16px;margin-bottom:16px;font-family:'Manrope',sans-serif">Key Features</h4>
+    <ul class="pr-feat-list" id="drawFeats">
+      <!-- Injected via JS -->
+    </ul>
+
+    <h4 style="color:#fff;font-size:16px;margin-bottom:16px;font-family:'Manrope',sans-serif">Technical Specifications</h4>
+    <div class="pr-spec-table" id="drawSpecs">
+      <!-- Injected via JS -->
+    </div>
+
+    <h4 style="color:#fff;font-size:16px;margin-bottom:16px;font-family:'Manrope',sans-serif">Applications</h4>
+    <div class="pr-app-tags" id="drawApps">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+  <div class="pr-drawer-cta">
+    <a class="btn btn-primary" id="drawInquire" href="contact.html" style="flex:1;text-align:center;justify-content:center">Inquire Now</a>
+    <a class="btn btn-ghost" id="drawData" href="#" style="flex:1;text-align:center;justify-content:center">Download Datasheet</a>
+  </div>
+</div>
+
+<!-- ===== SECTION 9: MANUFACTURING TRUST BAND ===== -->
+<section class="section sec-dark reveal">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+      <div>
+        <div class="eyebrow">Made in Mumbai</div>
+        <h2>Manufactured, tested and dispatched from one floor.</h2>
+        <p style="color:#A1A1AA;margin-top:16px;font-size:16px">PDR operates a vertically integrated production facility at Filmcity Complex, Goregaon East &mdash; ensuring zero supply chain gaps and full quality ownership.</p>
+        <a class="btn btn-outline" style="border-color:rgba(255,255,255,.18);color:#fff;margin-top:32px" href="about.html">About Our Manufacturing &rarr;</a>
+      </div>
+      <div class="pr-trust-grid">
+        <div class="pr-trust-tile">
+          <div class="stat-num">40+</div>
+          <div class="stat-label">Years Heritage</div>
+        </div>
+        <div class="pr-trust-tile">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Product Families</div>
+        </div>
+        <div class="pr-trust-tile">
+          <div class="stat-num">ISO</div>
+          <div class="stat-label">9001:2015</div>
+        </div>
+        <div class="pr-trust-tile">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Factory Tested</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 10: PRODUCTS PAGE CTA BAND ===== -->
+<section class="section">
+  <div class="container">
+    <div style="text-align:center;max-width:700px;margin:0 auto">
+      <div class="eyebrow" style="justify-content:center">Need a Custom Configuration?</div>
+      <h2>We manufacture to spec.</h2>
+      <p style="font-size:18px;color:var(--muted);margin-top:16px;margin-bottom:36px">Non-standard lengths, connector types, armour configurations, and private-label assemblies &mdash; quoted within 24 hours.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="contact.html">Submit Your RFQ</a>
+        <a class="btn btn-outline" href="contact.html">Talk to an Engineer</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ===== PRODUCT DATA OBJECT =====
+const productData = {
+  // Active
+  'sfp-transceivers': {
+    cat: 'Active Components', name: 'Fiber Optic Transceivers (SFP)',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="3"/><rect x="4" y="20" width="6" height="8" rx="1"/><rect x="38" y="20" width="6" height="8" rx="1"/><line x1="14" y1="24" x2="34" y2="24"/></svg>',
+    feats: ['High performance serial optical data communication','Cost effective modules','Compatible with major OEM switches'],
+    specs: {'Form Factor':'SFP / SFP+ / QSFP','Data Rate':'155M to 400G','Connector':'LC / SC Duplex','DOM Support':'Yes'},
+    apps: ['Telecom Networks','Data Centers','Enterprise IT','ISP Infrastructure']
+  },
+  'bypass-switch': {
+    cat: 'Active Components', name: 'Bypass Switch',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="12" width="24" height="24" rx="4"/><path d="M18 24h12"/><path d="M24 18v12"/><circle cx="12" cy="24" r="3"/><circle cx="36" cy="24" r="3"/></svg>',
+    feats: ['Automatic bypass of optical path on failure','Maintains network continuity','Low insertion loss'],
+    specs: {'Function':'Optical path control','Insertion Loss':'< 1.0 dB','Switching Time':'< 10ms'},
+    apps: ['Network Security Systems','Inline Monitoring','Fail-safe Architectures']
+  },
+  'olps': {
+    cat: 'Active Components', name: 'Optical Line Protection System (OLPS)',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="14" width="28" height="20" rx="3"/><path d="M16 24h16"/><path d="M24 19v10"/><circle cx="10" cy="24" r="2"/><circle cx="38" cy="24" r="2"/></svg>',
+    feats: ['Uses spare optical fiber to build a backup path','Automatic route switching on fiber break','Real-time line status monitoring'],
+    specs: {'Protection Type':'1+1 / 1:1','Switching Time':'< 20ms','Monitoring':'Real-time optical power'},
+    apps: ['DWDM Networks','Long Haul Transmission','Critical Infrastructure']
+  },
+  'dac': {
+    cat: 'Active Components', name: 'Direct Attached Cable (DAC)',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="4" y="18" width="12" height="12" rx="2"/><rect x="32" y="18" width="12" height="12" rx="2"/><path d="M16 24h16" stroke-dasharray="4 2"/></svg>',
+    feats: ['Hot-swappable direct attach copper cable','Pre-terminated with SFP+ connectors','Low power consumption'],
+    specs: {'Cable Type':'Twinax Copper','Data Rate':'10G / 25G / 40G / 100G','Length':'0.5m to 7m'},
+    apps: ['Top-of-Rack (ToR) Switching','Server Interconnects','Storage Area Networks']
+  },
+  'aoc': {
+    cat: 'Active Components', name: 'Active Optical Cable (AOC)',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="4" y="18" width="12" height="12" rx="2"/><rect x="32" y="18" width="12" height="12" rx="2"/><path d="M16 24c4-4 12 4 16 0"/></svg>',
+    feats: ['Highly reliable transceiver alternative','Lighter and more flexible than copper DAC','Embedded optical transceivers'],
+    specs: {'Cable Type':'Multimode Fiber','Data Rate':'10G / 25G / 40G / 100G','Reach':'Up to 100m'},
+    apps: ['High Performance Computing','Hyperscale Data Centers','Campus Networks']
+  },
+  'hd-sdi': {
+    cat: 'Active Components', name: 'HD-SDI Optical Transceiver',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="14" width="32" height="20" rx="3"/><circle cx="24" cy="24" r="5"/><line x1="14" y1="30" x2="34" y2="30"/></svg>',
+    feats: ['Broadcasting grade HD transceiver','Interconverts SD/HD/3G-SDI signals','Uncompressed digital video transmission'],
+    specs: {'Signal Format':'SD/HD/3G-SDI','Video Bandwidth':'Up to 2.97Gbps','Fiber Type':'Single-mode'},
+    apps: ['TV Broadcasting','Live Event Production','Security Surveillance']
+  },
+  'poe-injector': {
+    cat: 'Active Components', name: 'PoE Injector',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="14" width="28" height="20" rx="3"/><path d="M20 20v8"/><path d="M28 20v8"/><path d="M24 17v14"/></svg>',
+    feats: ['Delivers data and power over single Ethernet cable','IEEE 802.3af/at compliant','Plug and play installation'],
+    specs: {'Standard':'IEEE 802.3af/at','Data Rate':'10/100/1000Mbps','Output Power':'15.4W / 30W'},
+    apps: ['IP Cameras','Wireless Access Points','VoIP Phones']
+  },
+
+  // Passive
+  'cat6-patch-cord': {
+    cat: 'Passive Components', name: 'CAT 6 Patch Cord',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 24h24"/><rect x="6" y="20" width="8" height="8" rx="2"/><rect x="34" y="20" width="8" height="8" rx="2"/></svg>',
+    feats: ['High-speed copper patch cord','Factory terminated and tested','Snagless boot design'],
+    specs: {'Category':'Cat 6','Connector':'RJ45','Jacket':'PVC / LSZH'},
+    apps: ['LAN Networking','Server Racks','Workstation Connectivity']
+  },
+  'cpri-patchcord': {
+    cat: 'Passive Components', name: 'CPRI Patchcord',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 24h24"/><circle cx="10" cy="24" r="4"/><circle cx="38" cy="24" r="4"/></svg>',
+    feats: ['Outdoor waterproof fiber optic assembly','Harsh environment protection','Compatible with RRU/BBU'],
+    specs: {'Connector Type':'ODVA/IP/FX/PDLC/NSN','Cable Type':'Armored / Tactical','IP Rating':'IP67'},
+    apps: ['5G Cell Towers','FTTA Deployments','Outdoor Broadcast']
+  },
+  'fanout-patch-cords': {
+    cat: 'Passive Components', name: 'FanOut Patch Cords',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="6" y="20" width="10" height="8" rx="2"/><path d="M16 22l8-6"/><path d="M16 24h16"/><path d="M16 26l8 6"/><circle cx="38" cy="16" r="3"/><circle cx="38" cy="24" r="3"/><circle cx="38" cy="32" r="3"/></svg>',
+    feats: ['Small form factor high-density assembly','Breakout multi-fiber to simplex/duplex','Precision MT ferrule'],
+    specs: {'Connector A':'MTP/MPO','Connector B':'LC/SC/FC/ST','Fiber Count':'8 / 12 / 24'},
+    apps: ['High-Density Racks','SAN Switches','Core Routing']
+  },
+  'fo-patchcords': {
+    cat: 'Passive Components', name: 'Fiber Optic Patch Cords & Pigtails',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M8 24h32"/><circle cx="8" cy="24" r="3"/><circle cx="40" cy="24" r="3"/></svg>',
+    feats: ['Broadest choice of patchcords in the industry','100% interferometry tested','Low insertion and high return loss'],
+    specs: {'Fiber Type':'SM (G.652D/G.657) / MM (OM1-OM5)','Connectors':'LC/SC/FC/ST/E2000','Insertion Loss':'< 0.3 dB'},
+    apps: ['Telecom Networks','FTTH Drop Cables','Optical Distribution Frames']
+  },
+  'loopback': {
+    cat: 'Passive Components', name: 'Loop Back Patch Cord',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M14 24a10 10 0 0 1 20 0 10 10 0 0 1-20 0"/></svg>',
+    feats: ['Provides return signal for testing','Compact housing design','High stability and reliability'],
+    specs: {'Connector Type':'LC / SC / MPO','Fiber Type':'Single-mode / Multi-mode','Attenuation':'Customizable'},
+    apps: ['Equipment Burn-in Testing','Network Diagnostics','Transceiver Loopback']
+  },
+  'mode-conditioning': {
+    cat: 'Passive Components', name: 'Mode Conditioning Patchcord',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M8 24c8-8 24 8 32 0"/></svg>',
+    feats: ['Eliminates differential mode delay (DMD) effects','Enables Gigabit Ethernet over legacy MM fiber','Offset single-mode to multi-mode splice'],
+    specs: {'Offset':'Precision core alignment','Cable Type':'Duplex zipcord','Connectors':'SC/LC/FC'},
+    apps: ['Gigabit Ethernet LX/LH','Legacy Fiber Upgrades','Campus Networks']
+  },
+  'mpo-assembly': {
+    cat: 'Passive Components', name: 'MPO Cable Assembly',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="18" width="14" height="12" rx="2"/><rect x="26" y="18" width="14" height="12" rx="2"/><path d="M22 24h4"/></svg>',
+    feats: ['High-density multi-fiber connector system','Precision molded MT ferrule','Push-pull latching mechanism'],
+    specs: {'Fiber Count':'8/12/24/48','Polarity':'Type A / B / C','Insertion Loss':'Standard / Low Loss'},
+    apps: ['40G/100G Networks','Data Center Backbone','High-Density Interconnects']
+  },
+  'rapid-push': {
+    cat: 'Passive Components', name: 'Rapid Push Cable Assembly',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M10 24h28"/><path d="M34 20l4 4-4 4"/></svg>',
+    feats: ['FTTXsmart pushable preterminated drop solution','Eliminates field splicing','Designed for microduct deployment'],
+    specs: {'Cable Outer Dia':'2.0mm to 5.0mm','Connector':'SC/APC Pushable','Tensile Strength':'High'},
+    apps: ['FTTH Last Mile','Microduct Installations','MDU Deployments']
+  },
+  'smpte-assembly': {
+    cat: 'Passive Components', name: 'SMPTE Cable Assembly',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="3"/><circle cx="18" cy="24" r="3"/><circle cx="30" cy="24" r="3"/></svg>',
+    feats: ['Hybrid fiber and copper camera cable','Ruggedized and dirt protected connectors','Compliant with SMPTE 311M and 304M'],
+    specs: {'Components':'2 SM Fibers + 4 Copper Conductors','Jacket':'PUR / Lemo','Durability':'> 2000 Mating Cycles'},
+    apps: ['HDTV Broadcasting','Stadium Infrastructure','Mobile OB Vans']
+  },
+  'bare-fiber-adapter': {
+    cat: 'Passive Components', name: 'Bare Fiber Adapter',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="16" y="14" width="16" height="20" rx="3"/><line x1="8" y1="24" x2="16" y2="24"/><line x1="32" y1="24" x2="40" y2="24"/></svg>',
+    feats: ['Temporary link for bare optical fiber','Push-button fiber locking mechanism','Easy cleaning and maintenance'],
+    specs: {'Interface Types':'SC / LC / FC / ST','Ferrule':'Zirconia Ceramic','Insertion Loss':'< 0.2 dB'},
+    apps: ['Lab Testing','Emergency Field Restoration','Fiber Spool Testing']
+  },
+  'hybrid-adapter': {
+    cat: 'Passive Components', name: 'SC/APC to SC/UPC Adapter',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="14" width="20" height="20" rx="3"/><line x1="6" y1="24" x2="14" y2="24"/><line x1="34" y1="24" x2="42" y2="24"/><line x1="24" y1="14" x2="24" y2="34"/></svg>',
+    feats: ['Hybrid fixed type adapter converter','Converts APC polish to UPC polish','Zero attenuation design'],
+    specs: {'Fiber Type':'Single Mode 9/125','Loss':'0dB','Housing':'Plastic/Metal'},
+    apps: ['Network Integration','Test Equipment Interfacing','Cross-connection']
+  },
+  'attenuator': {
+    cat: 'Passive Components', name: 'Variable Fiber Attenuator',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M8 24h32"/><path d="M18 18l6 6-6 6"/><path d="M30 18l-6 6 6 6"/></svg>',
+    feats: ['Buildout attenuator for precise power control','Wavelength independent options available','High power endurance'],
+    specs: {'Attenuation Range':'1dB to 30dB','Wavelengths':'1310nm / 1490nm / 1550nm','Return Loss':'> 50dB'},
+    apps: ['Receiver Protection','Optical Power Equalization','EDFA Balancing']
+  },
+  'cwdm': {
+    cat: 'Passive Components', name: 'CWDM Mux / DeMux Module',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="12" width="20" height="24" rx="3"/><line x1="6" y1="20" x2="14" y2="20"/><line x1="6" y1="28" x2="14" y2="28"/><line x1="34" y1="24" x2="42" y2="24"/></svg>',
+    feats: ['Coarse WDM for cost-effective bandwidth expansion','High isolation and low insertion loss','Passive operation (no power required)'],
+    specs: {'Channel Count':'4 / 8 / 16 / 18 Ch','Spacing':'20nm','Operating Temp':'-40Â°C to +85Â°C'},
+    apps: ['Metro Access Networks','Enterprise DCI','CATV Infrastructure']
+  },
+  'dwdm': {
+    cat: 'Passive Components', name: 'DWDM Mux/DeMux Module',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="12" width="20" height="24" rx="3"/><line x1="6" y1="18" x2="14" y2="18"/><line x1="6" y1="24" x2="14" y2="24"/><line x1="6" y1="30" x2="14" y2="30"/><line x1="34" y1="24" x2="42" y2="24"/></svg>',
+    feats: ['Dense WDM for maximum fiber utilization','Based on thin film filter or AWG technology','High channel isolation'],
+    specs: {'Channel Count':'8 / 16 / 40 / 80 Ch','Spacing':'100GHz / 50GHz','Grid':'ITU Standard'},
+    apps: ['Long Haul Core Networks','High Capacity DCI','5G Fronthaul']
+  },
+  'plc-splitter': {
+    cat: 'Passive Components', name: 'PLC Splitter',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><line x1="8" y1="24" x2="20" y2="24"/><path d="M20 24l10-8"/><path d="M20 24l10 0"/><path d="M20 24l10 8"/></svg>',
+    feats: ['Planar Lightwave Circuit technology','Uniform power splitting','Broad operating wavelength'],
+    specs: {'Split Ratio':'1x2 up to 1x128','Wavelength':'1260nm - 1650nm','Packaging':'Bare fiber / Blockless / Cassette'},
+    apps: ['FTTH/PON Networks','CATV Links','Optical Signal Distribution']
+  },
+  'field-connector': {
+    cat: 'Passive Components', name: 'Fiber Optic Connector, Field Installable',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="16" width="20" height="16" rx="2"/><line x1="8" y1="24" x2="14" y2="24"/><line x1="34" y1="24" x2="40" y2="24"/></svg>',
+    feats: ['Fast Field Assembly Optical Connector','No epoxy or polishing required','Index matching gel inside'],
+    specs: {'Connector Type':'SC / LC / FC','Polishing':'UPC / APC','Assembly Time':'< 2 minutes'},
+    apps: ['FTTx Drop Cable Termination','Emergency Repairs','LAN Installations']
+  },
+
+  // Cable Management
+  'rack-mount-fms': {
+    cat: 'Cable Management Devices', name: 'Rack Mount Fiber Management System',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="6" y="16" width="36" height="16" rx="2"/><line x1="12" y1="24" x2="16" y2="24"/><line x1="20" y1="24" x2="24" y2="24"/><line x1="28" y1="24" x2="32" y2="24"/><circle cx="8" cy="20" r="1"/><circle cx="8" cy="28" r="1"/><circle cx="40" cy="20" r="1"/><circle cx="40" cy="28" r="1"/></svg>',
+    feats: ['19" Rack Mount fiber-optic enclosure','Slide-out drawer for easy access','Modular adapter panels'],
+    specs: {'Capacity':'Up to 144 cores (4U)','Material':'Cold rolled steel','Mounting':'Standard 19-inch rack'},
+    apps: ['Data Center Racks','Telecom Central Office','Enterprise Server Rooms']
+  },
+  'htb': {
+    cat: 'Cable Management Devices', name: 'Home Termination Box (HTB)',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="12" width="20" height="24" rx="2"/><path d="M14 24h20"/><circle cx="24" cy="18" r="2"/></svg>',
+    feats: ['Aesthetic design for indoor customer premises','Provides fiber termination points and housing','Wall mountable'],
+    specs: {'Capacity':'1 to 4 Cores','Material':'ABS plastic','Size':'Compact footprint'},
+    apps: ['FTTH Customer Premises','Residential Broadband','Office Workstations']
+  },
+  'wall-mount': {
+    cat: 'Cable Management Devices', name: 'Optical Fiber Wall Mount Enclosure',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="8" width="28" height="32" rx="3"/><line x1="24" y1="8" x2="24" y2="40"/><circle cx="20" cy="24" r="1"/><circle cx="28" cy="24" r="1"/></svg>',
+    feats: ['Two door wall mounted enclosure','Separate compartments for splicing and patching','Secure lockable doors'],
+    specs: {'Capacity':'Up to 96 Cores','Type':'Indoor Wall Mount','Security':'Keyed locks'},
+    apps: ['Building Distribution','Campus Networks','Security Camera Hubs']
+  },
+  'fdb': {
+    cat: 'Cable Management Devices', name: 'Fiber Distribution Box (FDB)',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="10" width="24" height="28" rx="2"/><line x1="12" y1="18" x2="36" y2="18"/><line x1="24" y1="18" x2="24" y2="38"/></svg>',
+    feats: ['Compact termination box for building premises','Connects drop cable with feeder cable','Integrates splicing and splitting'],
+    specs: {'Capacity':'4 to 32 Cores','Environment':'Indoor/Outdoor IP65','Splitter Support':'Cassette or Tube PLC'},
+    apps: ['FTTx Distribution Nodes','Multi-Dwelling Units (MDU)','Street Cabinets']
+  },
+  'cat6-panel': {
+    cat: 'Cable Management Devices', name: 'CAT 6 Patch Panel',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="6" y="16" width="36" height="16" rx="2"/><line x1="12" y1="20" x2="16" y2="20"/><line x1="12" y1="28" x2="16" y2="28"/><line x1="20" y1="20" x2="24" y2="20"/><line x1="20" y1="28" x2="24" y2="28"/><line x1="28" y1="20" x2="32" y2="20"/><line x1="28" y1="28" x2="32" y2="28"/></svg>',
+    feats: ['High speed Network distribution panel','Confirms to ISO/IEC standards','Cable management bar included'],
+    specs: {'Ports':'24 / 48 Port','Category':'Cat 6 UTP/STP','Size':'1U / 2U 19-inch'},
+    apps: ['Enterprise LAN','Server Room Copper Distribution','AV over IP setups']
+  },
+  'heat-shrink-closure': {
+    cat: 'Cable Management Devices', name: 'Heat Shrink Splice Closure',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 16h24a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4v-8a4 4 0 0 1 4-4z"/><path d="M8 20h32"/><path d="M8 28h32"/><line x1="20" y1="16" x2="20" y2="32"/><line x1="28" y1="16" x2="28" y2="32"/></svg>',
+    feats: ['Heat shrink sealing for harsh environments','Excellent waterproof and dustproof performance','Accommodates multiple splice trays'],
+    specs: {'Sealing Type':'Heat Shrink','Capacity':'Up to 288 Cores','Environment':'Aerial/Buried/Manhole (IP68)'},
+    apps: ['Outside Plant (OSP) Networks','Underground Splicing','Long Haul Routes']
+  },
+  'odf': {
+    cat: 'Cable Management Devices', name: 'Optical Distribution Frames',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="6" width="24" height="36" rx="2"/><line x1="12" y1="18" x2="36" y2="18"/><line x1="12" y1="30" x2="36" y2="30"/></svg>',
+    feats: ['Multi-purpose high-capacity distribution frame','High-quality ABS plastic or metal build','Efficient cable routing and protection'],
+    specs: {'Capacity':'Up to 576 Cores','Type':'Floor standing / Rack mount','Pigtail Management':'Integrated'},
+    apps: ['Telecom Central Office','Main Distribution Area (MDA)','Large Data Centers']
+  },
+  'horizontal-closure': {
+    cat: 'Cable Management Devices', name: 'Fiber Optic Splitter Closure GJS 2016',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="8"/><line x1="16" y1="16" x2="16" y2="32"/><line x1="32" y1="16" x2="32" y2="32"/><line x1="8" y1="24" x2="40" y2="24"/></svg>',
+    feats: ['Mechanical sealing structure','Oval shaped cable port entrances in base','Supports direct splicing and branching'],
+    specs: {'Sealing Type':'Mechanical','Shape':'Horizontal / Dome','Ports':'Multiple entry/exit'},
+    apps: ['FTTx Distribution Splicing','Aerial Messenger Wire','Wall/Pole Mount Splices']
+  },
+
+  // Test & Measuring
+  'pon-power-meter': {
+    cat: 'Test & Measuring Equipment', name: 'PON Power Meter',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="14" y="8" width="20" height="32" rx="3"/><rect x="18" y="14" width="12" height="8" rx="1"/><circle cx="24" cy="30" r="3"/><circle cx="20" cy="26" r="1"/><circle cx="28" cy="26" r="1"/><circle cx="20" cy="34" r="1"/><circle cx="28" cy="34" r="1"/></svg>',
+    feats: ['Pass-through measurement for live PON','Simultaneous testing of 1310/1490/1550nm','Burst mode measurement for 1310nm upstream'],
+    specs: {'Wavelengths':'1310/1490/1550nm','Network Type':'BPON/EPON/GPON','Display':'Color LCD'},
+    apps: ['FTTx Network Turn-up','PON Maintenance','OLT/ONT Verification']
+  },
+  'mini-opm': {
+    cat: 'Test & Measuring Equipment', name: 'Mini Optical Power Meter',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="16" y="10" width="16" height="28" rx="3"/><rect x="20" y="14" width="8" height="6" rx="1"/><circle cx="24" cy="28" r="4"/></svg>',
+    feats: ['Pocket-sized, lightweight design','High precision measurements','Long battery life with auto-off'],
+    specs: {'Calibrated Wavelengths':'850/1300/1310/1490/1550/1625nm','Detector':'InGaAs','Power':'AAA Batteries / USB'},
+    apps: ['Daily Fiber Link Testing','Attenuation Measurement','Optical Power Checks']
+  },
+  '5in1-opm': {
+    cat: 'Test & Measuring Equipment', name: '5 IN 1 Optical Power Meter',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="8" width="24" height="32" rx="3"/><rect x="16" y="14" width="16" height="8" rx="1"/><circle cx="24" cy="30" r="4"/><line x1="18" y1="28" x2="20" y2="28"/><line x1="28" y1="28" x2="30" y2="28"/><line x1="18" y1="32" x2="20" y2="32"/><line x1="28" y1="32" x2="30" y2="32"/></svg>',
+    feats: ['Combines OPM, VFL, LAN Tester, LED Light, and RJ45 testing','Broad measurement range (+10 to -70dBm)','High accuracy (+- 0.2 dB)'],
+    specs: {'Functions':'OPM, VFL, Network Test, Light','VFL Power':'1mW/10mW/30mW','Display':'Backlit LCD'},
+    apps: ['Comprehensive Field Diagnostics','Multipurpose Technician Toolkit','LAN & Fiber Troubleshooting']
+  },
+  'mini-otdr': {
+    cat: 'Test & Measuring Equipment', name: 'Mini OTDR PDR4402S',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="12" width="28" height="24" rx="3"/><rect x="14" y="16" width="20" height="12" rx="1"/><circle cx="16" cy="32" r="1"/><circle cx="20" cy="32" r="1"/><circle cx="24" cy="32" r="1"/><circle cx="32" cy="32" r="2"/></svg>',
+    feats: ['On-Line Mini Pro-OTDR','Event Map display for easy analysis','Integrated VFL and OPM'],
+    specs: {'Wavelengths':'1310/1550nm','Dynamic Range':'24/22dB','Dead Zone':'Event < 1.5m'},
+    apps: ['FTTx Installation','Data Center Characterization','Fiber Fault Location']
+  },
+  'fusion-splicer': {
+    cat: 'Test & Measuring Equipment', name: 'Fusion Splicer PDR618H',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="14" width="24" height="20" rx="3"/><path d="M18 14V10h12v4"/><circle cx="24" cy="24" r="4"/><path d="M12 24H8"/><path d="M40 24h-4"/></svg>',
+    feats: ['Handheld, small and light','Core alignment technology','Fast 8s splicing and 26s tube heating'],
+    specs: {'Alignment':'Core to Core','Battery':'5800mAh Pluggable','Display':'High-res LCD'},
+    apps: ['Outside Plant Splicing','FTTH Drop Cables','Emergency Network Repair']
+  },
+  'easyget-wifi': {
+    cat: 'Test & Measuring Equipment', name: 'EasyGet WiFi Wireless Fiber Endface Microscope',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="18" y="10" width="12" height="28" rx="2"/><path d="M22 10V6h4v4"/><circle cx="24" cy="18" r="3"/><circle cx="24" cy="30" r="1"/></svg>',
+    feats: ['Wireless transmission to smartphone/tablet','High-resolution endface imaging','Eliminates direct eye exposure to lasers'],
+    specs: {'Connectivity':'WiFi / USB','Magnification':'400X','App Support':'iOS / Android / Windows'},
+    apps: ['Connector Endface Inspection','Patch Panel Cleaning Verification','Transceiver Port Checking']
+  },
+  'easycheck-v2': {
+    cat: 'Test & Measuring Equipment', name: 'EasyCheck V2 Digital Fiber Endface Inspector',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="12" width="28" height="24" rx="3"/><rect x="14" y="16" width="20" height="14" rx="1"/><path d="M20 40l4-4 4 4"/></svg>',
+    feats: ['Desktop digital fiber inspector','Large integrated display screen','Automated pass/fail analysis software'],
+    specs: {'Display':'Integrated LCD','Analysis':'IEC Standard Pass/Fail','Image Storage':'SD Card / USB'},
+    apps: ['Factory Quality Control (QC)','Cable Assembly Production','Lab Testing']
+  },
+  'drone': {
+    cat: 'Specialty Products', name: 'Optical Fiber Drone',
+    icon: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 12l24 24M12 36l24-24"/><circle cx="12" cy="12" r="4"/><circle cx="36" cy="36" r="4"/><circle cx="12" cy="36" r="4"/><circle cx="36" cy="12" r="4"/><rect x="20" y="20" width="8" height="8" rx="2"/></svg>',
+    feats: ['Rapid aerial deployment in inaccessible areas','High-resolution optical infrastructure inspection','Real-time secure surveillance feed'],
+    specs: {'Flight Time':'Extended','Camera':'4K / Thermal','Deployment Rate':'High-speed aerial stringing'},
+    apps: ['Mountain/River Fiber Crossing','Post-Disaster Reconnaissance','Infrastructure Audits']
+  }
+};
+
+// Drawer Logic
+const prDrawer = document.getElementById('prDrawer');
+const prBackdrop = document.getElementById('prBackdrop');
+
+function openDrawer(slug) {
+  const d = productData[slug];
+  if(!d) return;
+  
+  document.getElementById('drawEyebrow').textContent = d.cat;
+  document.getElementById('drawTitle').textContent = d.name;
+  document.getElementById('drawImg').innerHTML = d.icon;
+  
+  // Features
+  document.getElementById('drawFeats').innerHTML = d.feats.map(f => 
+    `<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> <span>${f}</span></li>`
+  ).join('');
+  
+  // Specs
+  document.getElementById('drawSpecs').innerHTML = Object.entries(d.specs).map(([k,v]) => 
+    `<div class="pr-spec-trow"><div class="pr-spec-tkey">${k}</div><div class="pr-spec-tval">${v}</div></div>`
+  ).join('');
+  
+  // Applications
+  document.getElementById('drawApps').innerHTML = d.apps.map(a => 
+    `<span class="pr-app-tag">${a}</span>`
+  ).join('');
+  
+  // Contact Link
+  document.getElementById('drawInquire').href = `contact.html?product=${encodeURIComponent(d.name)}`;
+  
+  prDrawer.classList.add('open');
+  prBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden'; // prevent bg scrolling
+}
+
+function closeDrawer() {
+  prDrawer.classList.remove('open');
+  prBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Sticky Nav Logic
+const tabs = document.querySelectorAll('.pr-tab');
+const sections = Array.from(tabs).map(t => document.getElementById(t.dataset.target)).filter(Boolean);
+
+if('IntersectionObserver' in window) {
+  const navObs = new IntersectionObserver(entries => {
+    let visibleSectionId = null;
+    entries.forEach(e => { if(e.isIntersecting) visibleSectionId = e.target.id; });
+    
+    if(visibleSectionId) {
+      tabs.forEach(t => {
+        if(t.dataset.target === visibleSectionId) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+      // Scroll the active tab into view horizontally if needed
+      const activeTab = document.querySelector('.pr-tab.active');
+      if(activeTab) {
+        const row = document.querySelector('.pr-tab-row');
+        row.scrollLeft = activeTab.offsetLeft - 20;
+      }
+    }
+  }, { rootMargin: '-100px 0px -60% 0px' });
+  
+  sections.forEach(s => navObs.observe(s));
+}
+</script>
+</main>
+
+

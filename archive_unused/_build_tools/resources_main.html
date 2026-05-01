@@ -1,0 +1,182 @@
+<main>
+<style>
+/* ===== RESOURCES PAGE SCOPED STYLES (rs- prefix) ===== */
+.rs-hero { padding: 140px 0 60px; background: var(--bg); text-align: center; position: relative; overflow: hidden; }
+.rs-hero::before { content: ""; position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 1000px; height: 1000px; background: radial-gradient(circle, rgba(225,29,72,0.06), transparent 60%); pointer-events: none; }
+.rs-hero p { font-size: 18px; color: #A1A1AA; max-width: 600px; margin: 20px auto 0; }
+
+.rs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 64px; }
+.rs-card { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--rad); padding: 40px; transition: all 0.3s; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.rs-card:hover { background: #fff; box-shadow: var(--shadow); border-color: #D4D4D8; transform: translateY(-4px); }
+.rs-icon { width: 56px; height: 56px; border-radius: 14px; background: rgba(225,29,72,0.1); color: var(--accent); display: grid; place-items: center; margin-bottom: 24px; }
+.rs-card h3 { font-size: 22px; margin-bottom: 12px; }
+.rs-card p { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; flex: 1; }
+.rs-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--accent); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+.rs-link:hover { color: var(--accent-2); }
+
+.rs-media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.rs-video-card { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #fff; display: block; text-decoration: none; transition: all 0.3s; }
+.rs-video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-sm); border-color: #D4D4D8; }
+.rs-video-thumb { height: 180px; background: #18181B; position: relative; display: grid; place-items: center; }
+.rs-video-thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(225,29,72,0.1), transparent); }
+.rs-play-btn { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); display: grid; place-items: center; color: #fff; z-index: 2; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.4); }
+.rs-video-card:hover .rs-play-btn { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
+.rs-video-info { padding: 20px; }
+.rs-video-info h4 { font-size: 16px; color: var(--ink); margin-bottom: 8px; line-height: 1.4; }
+.rs-video-info p { font-size: 13px; color: var(--muted); }
+
+.rs-events-list { display: flex; flex-direction: column; gap: 16px; }
+.rs-event { display: flex; align-items: center; justify-content: space-between; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: #fff; transition: all 0.2s; }
+.rs-event:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.rs-event-date { width: 80px; text-align: center; padding-right: 24px; border-right: 1px solid var(--line); flex-shrink: 0; }
+.rs-event-month { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
+.rs-event-day { font-family: 'Manrope', sans-serif; font-size: 28px; font-weight: 800; color: var(--ink); line-height: 1.1; }
+.rs-event-details { flex: 1; padding: 0 24px; }
+.rs-event-details h4 { font-size: 18px; margin-bottom: 6px; }
+.rs-event-details p { font-size: 14px; color: var(--muted); margin-bottom: 0; }
+.rs-event-action { flex-shrink: 0; }
+
+@media(max-width: 900px) {
+  .rs-grid { grid-template-columns: 1fr; }
+  .rs-media-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media(max-width: 600px) {
+  .rs-media-grid { grid-template-columns: 1fr; }
+  .rs-event { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .rs-event-date { width: 100%; border-right: none; border-bottom: 1px solid var(--line); padding-right: 0; padding-bottom: 16px; display: flex; gap: 12px; align-items: baseline; text-align: left; }
+  .rs-event-details { padding: 0; }
+  .rs-card { padding: 32px 24px; }
+}
+</style>
+
+<!-- HERO -->
+<section class="rs-hero reveal">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center">Support &amp; Insights</div>
+    <h1 style="color:#fff">Resources &amp; Media</h1>
+    <p>Access technical documentation, partner programs, training videos, and the latest news from PDR Videotronics.</p>
+
+    <div class="rs-grid">
+      <!-- Technical Support -->
+      <div class="rs-card" id="support">
+        <div class="rs-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3>Technical Support</h3>
+        <p>Direct access to our engineering team for installation guidance, troubleshooting, and product specifications. We provide comprehensive support for all active and passive components.</p>
+        <a class="rs-link" href="contact.html?inquiry=Technical Support">Contact Engineering Team &rarr;</a>
+      </div>
+
+      <!-- Partner Program -->
+      <div class="rs-card" id="partners">
+        <div class="rs-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Channel Partner Program</h3>
+        <p>Join our nationwide network of distributors and resellers. Benefit from competitive wholesale pricing, dedicated account management, and priority technical support.</p>
+        <a class="rs-link" href="contact.html?inquiry=Distributorship">Apply to be a Partner &rarr;</a>
+      </div>
+
+      <!-- Custom Manufacturing -->
+      <div class="rs-card" id="custom">
+        <div class="rs-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3>Custom Manufacturing (OEM)</h3>
+        <p>We manufacture to spec. If you need non-standard lengths, specific connector types, custom ODF designs, or private-label assemblies, our facility can deliver.</p>
+        <a class="rs-link" href="contact.html?inquiry=Custom Manufacturing">Request Custom Quote &rarr;</a>
+      </div>
+
+      <!-- Training -->
+      <div class="rs-card" id="training">
+        <div class="rs-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3>Product Training</h3>
+        <p>Comprehensive training sessions on fiber optic splicing, testing equipment operation, and network deployment best practices conducted by our experts.</p>
+        <a class="rs-link" href="contact.html?inquiry=Training">Inquire About Training &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA & VIDEOS -->
+<section class="section sec-muted reveal" id="videos">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Video Gallery</div>
+      <h2>Tutorials &amp; Demonstrations</h2>
+      <p>Watch our technical guides, product demonstrations, and corporate overviews on our official YouTube channel.</p>
+    </div>
+
+    <div class="rs-media-grid">
+      <a href="https://www.youtube.com/channel/UCTOAYCstGJNZulaOF0TXGlg" target="_blank" rel="noopener" class="rs-video-card">
+        <div class="rs-video-thumb">
+          <div class="rs-play-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+        </div>
+        <div class="rs-video-info">
+          <h4>Fusion Splicer PDR618H Setup Guide</h4>
+          <p>Learn how to calibrate and operate our 8s fusion splicer.</p>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/channel/UCTOAYCstGJNZulaOF0TXGlg" target="_blank" rel="noopener" class="rs-video-card">
+        <div class="rs-video-thumb">
+          <div class="rs-play-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+        </div>
+        <div class="rs-video-info">
+          <h4>Mini OTDR PDR4402S Demo</h4>
+          <p>Analyzing fiber faults and events using our Pro-OTDR.</p>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/channel/UCTOAYCstGJNZulaOF0TXGlg" target="_blank" rel="noopener" class="rs-video-card">
+        <div class="rs-video-thumb">
+          <div class="rs-play-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+        </div>
+        <div class="rs-video-info">
+          <h4>Factory Tour: Mumbai Facility</h4>
+          <p>Inside our clean rooms and interferometry testing labs.</p>
+        </div>
+      </a>
+    </div>
+
+    <div style="text-align:center;margin-top:32px">
+      <a class="btn btn-outline" href="https://www.youtube.com/channel/UCTOAYCstGJNZulaOF0TXGlg" target="_blank" rel="noopener">Subscribe to PDR on YouTube</a>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="section reveal" id="events">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Upcoming</div>
+      <h2>Events &amp; Exhibitions</h2>
+      <p>Meet the PDR team at industry trade shows and exhibitions across India.</p>
+    </div>
+
+    <div class="rs-events-list">
+      <div class="rs-event">
+        <div class="rs-event-date">
+          <div class="rs-event-month">Oct</div>
+          <div class="rs-event-day">15</div>
+        </div>
+        <div class="rs-event-details">
+          <h4>Convergence India Expo</h4>
+          <p>Pragati Maidan, New Delhi &mdash; Showcasing our latest 5G and FTTH passive infrastructure solutions.</p>
+        </div>
+        <div class="rs-event-action">
+          <a class="btn btn-outline" href="contact.html">Book a Meeting</a>
+        </div>
+      </div>
+
+      <div class="rs-event">
+        <div class="rs-event-date">
+          <div class="rs-event-month">Nov</div>
+          <div class="rs-event-day">22</div>
+        </div>
+        <div class="rs-event-details">
+          <h4>InfoComm India</h4>
+          <p>Jio World Convention Centre, Mumbai &mdash; Live demonstrations of our SMPTE and Broadcast AV solutions.</p>
+        </div>
+        <div class="rs-event-action">
+          <a class="btn btn-outline" href="contact.html">Book a Meeting</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>

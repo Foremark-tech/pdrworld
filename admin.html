@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PDR World Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090B;
+            --bg-2: #18181B;
+            --bg-3: #27272A;
+            --accent: #E11D48;
+            --accent-2: #F43F5E;
+            --accent-soft: rgba(225, 29, 72, 0.12);
+            --muted: #71717A;
+            --soft: #A1A1AA;
+            --line-dark: rgba(255, 255, 255, 0.08);
+            --green: #10B981;
+            --amber: #F59E0B;
+            --blue: #3B82F6;
+            --font-sans: 'Inter', sans-serif;
+            --font-head: 'Manrope', sans-serif;
+            --shadow-primary: 0 8px 24px -8px rgba(225, 29, 72, 0.55);
+            --shadow-card: 0 30px 80px -20px rgba(0, 0, 0, 0.55);
+            --transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #ffffff;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Utility */
+        .manrope { font-family: var(--font-head); }
+        .text-muted { color: var(--muted); }
+        .text-soft { color: var(--soft); }
+        .text-accent { color: var(--accent); }
+        .text-green { color: var(--green); }
+        .text-amber { color: var(--amber); }
+        .text-blue { color: var(--blue); }
+        .bg-card { background-color: var(--bg-2); }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            font-family: var(--font-head);
+            transition: var(--transition);
+        }
+
+        input {
+            font-family: var(--font-sans);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        /* --- LOGIN SCREEN --- */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        #login-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, var(--bg-3) 0%, transparent 60%);
+            opacity: 0.5;
+            z-index: -2;
+        }
+
+        #login-screen::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 28px 28px;
+            z-index: -1;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background-color: var(--bg-2);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 48px;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .brand-mark {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: 0 8px 20px rgba(225, 29, 72, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .login-title { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
+        .login-subtitle { font-size: 13px; color: var(--muted); }
+        .login-separator { width: 40px; height: 2px; background-color: var(--accent); margin: 28px 0; border-radius: 2px; }
+
+        .form-group { width: 100%; margin-bottom: 20px; position: relative; }
+        .form-label {
+            display: flex; justify-content: space-between;
+            font-family: var(--font-head); font-size: 12px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .form-input {
+            width: 100%; background: var(--bg-3); border: 1px solid var(--line-dark);
+            border-radius: 10px; padding: 14px 16px; color: white; font-size: 15px;
+        }
+        .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15); }
+        .form-icon { position: absolute; right: 16px; top: 38px; color: var(--muted); width: 20px; height: 20px; }
+
+        .btn-primary {
+            width: 100%; height: 52px; background-color: var(--accent); color: white;
+            border-radius: 10px; font-size: 16px; font-weight: 700; margin-top: 12px;
+            box-shadow: var(--shadow-primary); position: relative; overflow: hidden;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(225, 29, 72, 0.7); background-color: #BE123C; }
+        .btn-primary .spinner {
+            display: none; position: absolute; inset: 0; margin: auto; width: 24px; height: 24px;
+            border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .btn-primary.loading .btn-text { opacity: 0; }
+        .btn-primary.loading .spinner { display: block; }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .login-note { margin-top: 24px; font-size: 11px; color: #52525B; text-align: center; }
+
+        /* --- DASHBOARD LAYOUT --- */
+        #dashboard-screen {
+            display: flex;
+            min-height: 100vh;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: #0D0D0F;
+            border-right: 1px solid var(--line-dark);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            z-index: 40;
+            transition: var(--transition);
+        }
+
+        .sidebar-header { padding: 24px 20px; display: flex; align-items: center; gap: 12px; }
+        .sidebar-brand { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 800; font-size: 10px; }
+        .sidebar-title { font-family: var(--font-head); font-weight: 800; font-size: 16px; line-height: 1.2; }
+        .sidebar-subtitle { font-size: 11px; color: var(--muted); }
+
+        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 0 12px 20px; }
+        .sidebar-scroll::-webkit-scrollbar { display: none; }
+        
+        .nav-group { margin-top: 24px; }
+        .nav-label { font-size: 10px; color: #52525B; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 8px; padding-left: 12px; font-family: var(--font-head); }
+        .nav-item {
+            display: flex; align-items: center; height: 40px; border-radius: 10px; padding: 0 12px;
+            color: var(--soft); font-weight: 500; cursor: pointer; transition: 0.2s ease;
+            position: relative; text-decoration: none; margin-bottom: 4px;
+        }
+        .nav-icon { width: 20px; height: 20px; margin-right: 12px; transition: 0.2s ease; }
+        .nav-item:hover { background-color: rgba(255, 255, 255, 0.05); color: white; }
+        .nav-item.active { background-color: var(--accent-soft); color: white; border-left: 2px solid var(--accent); border-radius: 0 10px 10px 0; }
+        .nav-item.active .nav-icon { color: var(--accent); }
+        .nav-badge { margin-left: auto; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+        .nav-badge.red { background: var(--accent-soft); color: var(--accent); }
+        .nav-badge.amber { background: rgba(245,158,11,0.15); color: var(--amber); }
+
+        .sidebar-footer { padding: 20px; border-top: 1px solid var(--line-dark); display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-3); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; position: relative; }
+        .avatar-dot { position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background: var(--green); border-radius: 50%; border: 2px solid #0D0D0F; }
+        .user-info { flex: 1; }
+        .user-name { font-weight: 600; font-size: 13px; }
+        .user-role { font-size: 11px; color: var(--muted); }
+
+        /* Main Content wrapper */
+        .main-wrapper { margin-left: 26px; flex: 1; display: flex; flex-direction: column; width: calc(100% - 260px); margin-left: 260px; transition: var(--transition); }
+
+        /* Header */
+        .top-header {
+            height: 60px; background: rgba(9, 9, 11, 0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--line-dark); display: flex; align-items: center; justify-content: space-between;
+            padding: 0 32px; position: sticky; top: 0; z-index: 30;
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .page-title { font-family: var(--font-head); font-weight: 700; font-size: 18px; }
+        .breadcrumb { font-size: 12px; color: #52525B; }
+        
+        .header-center { flex: 1; max-width: 320px; margin: 0 32px; position: relative; }
+        .search-input { width: 100%; height: 36px; background: var(--bg-2); border: 1px solid var(--line-dark); border-radius: 18px; padding: 0 16px 0 36px; color: white; font-size: 13px; }
+        .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15); }
+        .search-icon { position: absolute; left: 12px; top: 10px; width: 16px; height: 16px; color: var(--muted); }
+
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .btn-icon { width: 36px; height: 36px; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: var(--soft); position: relative; }
+        .btn-icon:hover { background: var(--bg-3); color: white; }
+        .bell-badge { position: absolute; top: 6px; right: 8px; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+        .btn-quick { height: 36px; padding: 0 16px; background: var(--accent); color: white; border-radius: 18px; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-primary); }
+        .btn-quick:hover { transform: translateY(-1px); box-shadow: 0 10px 20px -6px rgba(225, 29, 72, 0.7); }
+
+        /* Main Content Area */
+        .main-content { padding: 32px; display: flex; flex-direction: column; gap: 32px; }
+
+        /* Stagger classes */
+        .stagger-1 { opacity: 0; transform: translateY(16px); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .stagger-2 { opacity: 0; transform: translateY(16px); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.08s; }
+        .stagger-3 { opacity: 0; transform: translateY(16px); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.16s; }
+        .stagger-4 { opacity: 0; transform: translateY(16px); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.24s; }
+        .stagger-5 { opacity: 0; transform: translateY(16px); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.32s; }
+        .stagger-6 { opacity: 0; transform: translateY(16px); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.40s; }
+        .is-loaded .stagger-1, .is-loaded .stagger-2, .is-loaded .stagger-3, .is-loaded .stagger-4, .is-loaded .stagger-5, .is-loaded .stagger-6 { opacity: 1; transform: translateY(0); }
+
+        /* Section 1: Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .stat-card { background: var(--bg-2); border: 1px solid var(--line-dark); border-radius: 14px; padding: 24px; transition: var(--transition); }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(225, 29, 72, 0.12); border-color: rgba(225, 29, 72, 0.3); }
+        .stat-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+        .stat-title { font-family: var(--font-head); font-weight: 700; font-size: 14px; color: var(--soft); }
+        .stat-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; color: var(--accent); }
+        .stat-value { font-family: var(--font-head); font-weight: 800; font-size: 32px; line-height: 1; margin-bottom: 8px; }
+        .stat-trend { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+        .pulse-accent { border-left: 3px solid var(--accent); }
+
+        /* Section 2: Table */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-title { font-family: var(--font-head); font-weight: 700; font-size: 18px; }
+        .table-card { background: var(--bg-2); border-radius: 14px; border: 1px solid var(--line-dark); overflow: hidden; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: var(--bg-3); padding: 12px 20px; font-family: var(--font-head); font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 700; letter-spacing: 0.05em; border-bottom: 1px solid var(--line-dark); }
+        td { padding: 16px 20px; border-bottom: 1px solid var(--line-dark); font-size: 13px; color: #D4D4D8; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+        
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 99px; font-family: var(--font-head); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .status-new { background: rgba(225, 29, 72, 0.15); color: var(--accent); }
+        .status-review { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+        .status-quoted { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
+        .status-converted { background: rgba(16, 185, 129, 0.15); color: var(--green); }
+        
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); } 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); } }
+        .pulse-badge { animation: pulseGlow 2s infinite; }
+
+        .btn-outline { background: transparent; border: 1px solid var(--line-dark); color: white; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+        .btn-outline:hover { border-color: var(--soft); background: rgba(255,255,255,0.05); }
+        .btn-ghost { background: transparent; color: var(--muted); font-size: 13px; font-weight: 600; padding: 8px; border-radius: 8px; }
+        .btn-ghost:hover { color: white; background: rgba(255,255,255,0.05); }
+        .btn-ghost.red:hover { color: var(--accent); background: var(--accent-soft); }
+
+        /* Section 3: Products */
+        .controls-row { display: flex; gap: 12px; margin-bottom: 20px; }
+        .filter-select { background: var(--bg-2); border: 1px solid var(--line-dark); color: white; padding: 0 16px; height: 36px; border-radius: 8px; font-family: var(--font-sans); font-size: 13px; outline: none; appearance: none; padding-right: 32px; background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2371717A" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7"></path></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .product-card { background: var(--bg-2); border-radius: 14px; border: 1px solid var(--line-dark); overflow: hidden; transition: var(--transition); }
+        .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); border-color: rgba(255,255,255,0.15); }
+        
+        .thumb { height: 160px; background: linear-gradient(135deg, var(--bg-3), var(--bg-2)); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .thumb::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.02) 10px, rgba(255,255,255,0.02) 11px); }
+        .thumb svg.base { position: absolute; width: 120px; height: 120px; opacity: 0.15; color: white; }
+        .thumb svg.accent { position: relative; width: 48px; height: 48px; color: var(--accent); z-index: 1; filter: drop-shadow(0 8px 16px rgba(225,29,72,0.3)); }
+        .thumb-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-soft); color: var(--accent); padding: 2px 8px; border-radius: 99px; font-size: 11px; font-family: var(--font-head); font-weight: 700; z-index: 2; border: 1px solid rgba(225,29,72,0.2); }
+
+        .product-info { padding: 16px; }
+        .product-name { font-family: var(--font-head); font-weight: 700; font-size: 15px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-sku { font-family: monospace; font-size: 11px; color: #52525B; margin-bottom: 16px; }
+        .product-actions { display: flex; gap: 8px; align-items: center; }
+
+        /* Section 4: Content Management */
+        .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .content-card { background: var(--bg-2); border-radius: 14px; border: 1px solid var(--line-dark); padding: 24px; display: flex; align-items: center; gap: 16px; transition: var(--transition); cursor: pointer; }
+        .content-card:hover { background: var(--bg-3); }
+        .content-card:hover .content-arrow { transform: translateX(4px); color: var(--accent); }
+        .content-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--bg-3); display: flex; align-items: center; justify-content: center; color: var(--soft); flex-shrink: 0; }
+        .content-text { flex: 1; }
+        .content-title { font-family: var(--font-head); font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+        .content-desc { font-size: 12px; color: var(--muted); }
+        .content-arrow { color: var(--muted); transition: var(--transition); }
+
+        /* Section 5: Quick Actions */
+        .quick-scroll { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px; }
+        .quick-scroll::-webkit-scrollbar { height: 4px; }
+        .quick-scroll::-webkit-scrollbar-track { background: var(--bg-2); border-radius: 2px; }
+        .quick-scroll::-webkit-scrollbar-thumb { background: var(--line-dark); border-radius: 2px; }
+        .pill-btn { flex-shrink: 0; height: 52px; padding: 0 24px; border-radius: 26px; font-family: var(--font-head); font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; background: var(--bg-2); border: 1px solid var(--line-dark); color: white; }
+        .pill-btn:hover { background: var(--bg-3); border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        .pill-btn.primary { background: var(--accent); border-color: var(--accent); box-shadow: var(--shadow-primary); }
+        .pill-btn.primary:hover { background: #BE123C; }
+
+        /* Section 6: Analytics */
+        .chart-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .chart-card { background: var(--bg-2); border-radius: 14px; border: 1px solid var(--line-dark); padding: 24px; }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .chart-title { font-family: var(--font-head); font-weight: 700; font-size: 15px; }
+        .chart-tag { font-size: 11px; background: var(--bg-3); padding: 2px 8px; border-radius: 99px; color: var(--muted); }
+        
+        .chart-container { height: 180px; width: 100%; display: flex; align-items: flex-end; justify-content: space-between; position: relative; }
+        /* Chart SVG interactions */
+        .chart-bar { transition: 0.3s; transform-origin: bottom; }
+        .chart-bar:hover { fill: var(--accent-2); filter: drop-shadow(0 0 8px rgba(225,29,72,0.4)); }
+        .chart-segment { transition: 0.3s; transform-origin: center; }
+        .chart-segment:hover { transform: scale(1.05); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+        .chart-hbar { transition: 0.3s; }
+        .chart-hbar:hover { fill: var(--accent-2); }
+
+        /* Toast */
+        #toast-container { position: fixed; bottom: 32px; right: 32px; display: flex; flex-direction: column; gap: 12px; z-index: 200; pointer-events: none; }
+        .toast { background: var(--bg-2); border: 1px solid var(--line-dark); border-left: 3px solid var(--accent); border-radius: 8px; padding: 16px 20px; box-shadow: var(--shadow-card); display: flex; align-items: center; gap: 12px; transform: translateY(100%); opacity: 0; animation: toastSlide 0.4s forwards cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; }
+        .toast.fade-out { animation: toastFadeOut 0.4s forwards; }
+        .toast-icon { color: var(--accent); width: 20px; height: 20px; }
+        .toast-text { font-size: 13px; font-weight: 500; }
+        @keyframes toastSlide { to { transform: translateY(0); opacity: 1; } }
+        @keyframes toastFadeOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(10px); opacity: 0; } }
+
+        /* Responsive */
+        @media (max-width: 1280px) {
+            .sidebar { width: 52px; }
+            .sidebar-header { padding: 24px 10px; justify-content: center; }
+            .sidebar-title, .sidebar-subtitle, .nav-label, .nav-item span, .nav-badge, .user-info { display: none; }
+            .nav-item { justify-content: center; padding: 0; border-radius: 8px; margin: 0 6px 8px; }
+            .nav-item.active { border-left: none; border-bottom: 2px solid var(--accent); border-radius: 8px; }
+            .nav-icon { margin-right: 0; }
+            .avatar { width: 28px; height: 28px; }
+            .sidebar-footer { padding: 20px 0; justify-content: center; }
+            .main-wrapper { margin-left: 52px; width: calc(100% - 52px); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .content-grid { grid-template-columns: repeat(2, 1fr); }
+            .chart-grid { grid-template-columns: repeat(2, 1fr); }
+
+            /* Tooltips for collapsed sidebar */
+            .nav-item::after {
+                content: attr(data-tooltip); position: absolute; left: 100%; top: 50%; transform: translateY(-50%) translateX(10px);
+                background: var(--bg-2); color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; font-family: var(--font-sans);
+                white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s; border: 1px solid var(--line-dark); box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 100;
+            }
+            .nav-item:hover::after { opacity: 1; transform: translateY(-50%) translateX(16px); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); width: 260px; }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-wrapper { margin-left: 0; width: 100%; }
+            .stats-grid, .products-grid, .content-grid, .chart-grid { grid-template-columns: 1fr; }
+            .header-center { display: none; }
+            .top-header { padding: 0 20px; }
+            .main-content { padding: 20px; }
+            /* Mobile tooltips hidden */
+            .sidebar-title, .sidebar-subtitle, .nav-label, .nav-item span, .nav-badge, .user-info { display: block; }
+            .nav-item { justify-content: flex-start; padding: 0 12px; margin: 0 0 4px 0; }
+            .nav-item.active { border-bottom: none; border-left: 2px solid var(--accent); }
+            .nav-icon { margin-right: 12px; }
+            .sidebar-header { justify-content: flex-start; padding: 24px 20px; }
+            .sidebar-footer { padding: 20px; justify-content: flex-start; }
+            .nav-item::after { display: none; }
+        }
+
+        .hamburger { display: none; background: none; color: white; margin-right: 16px; }
+        @media (max-width: 768px) { .hamburger { display: block; } }
+
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="brand-mark">PDR</div>
+            <h1 class="login-title">PDR World Admin</h1>
+            <p class="login-subtitle">Internal Management System · Since 1985</p>
+            <div class="login-separator"></div>
+            
+            <form id="login-form" style="width: 100%;">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" placeholder="admin@pdrworld.com" required value="admin@pdrworld.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>Password</span>
+                        <span class="text-accent" style="cursor:pointer;">Forgot password?</span>
+                    </label>
+                    <input type="password" class="form-input" placeholder="••••••••" required value="password123">
+                    <svg class="form-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                </div>
+                <button type="submit" class="btn-primary" id="login-btn">
+                    <span class="btn-text">Sign In to Dashboard</span>
+                    <div class="spinner"></div>
+                </button>
+            </form>
+            
+            <p class="login-note">Secured access · PDR Videotronics India Pvt. Ltd.</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">PDR</div>
+                <div>
+                    <div class="sidebar-title">PDR World</div>
+                    <div class="sidebar-subtitle">Admin Panel</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-scroll">
+                <div class="nav-group">
+                    <div class="nav-label">Overview</div>
+                    <a href="#" class="nav-item active" data-tooltip="Dashboard">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Analytics">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        <span>Analytics</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">Catalogue</div>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Products">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        <span>Products</span>
+                        <span class="nav-badge">180+</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Categories">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                        <span>Categories</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Media Library">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span>Media Library</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Brochures / Datasheets">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <span>Brochures</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Certifications">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        <span>Certifications</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">Leads</div>
+                    <a href="#" class="nav-item action-btn" data-tooltip="RFQ Leads">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                        <span>RFQ Leads</span>
+                        <span class="nav-badge red pulse-badge">24</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Contact Enquiries">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span>Contact Enquiries</span>
+                        <span class="nav-badge amber">11</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">Company</div>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Industries">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        <span>Industries</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Careers">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span>Careers</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Team Access">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <span>Team Access</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">System</div>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Settings">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="nav-item action-btn" data-tooltip="Logout" style="color: #F43F5E;">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="avatar">
+                    AD
+                    <div class="avatar-dot"></div>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Super Admin</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="hamburger" id="mobile-menu-btn">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                    <div>
+                        <div class="page-title">Dashboard</div>
+                        <div class="breadcrumb">PDR World / Dashboard</div>
+                    </div>
+                </div>
+                
+                <div class="header-center">
+                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" class="search-input" placeholder="Search products, leads, pages…">
+                </div>
+
+                <div class="header-right">
+                    <button class="btn-icon action-btn">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <div class="bell-badge pulse-badge"></div>
+                    </button>
+                    <button class="btn-quick action-btn">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                        Quick Add
+                    </button>
+                    <div class="avatar" style="cursor:pointer;" class="action-btn">AD</div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="main-content">
+                
+                <!-- Section 1: Stats -->
+                <section class="stagger-1">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-title">Total Products</div>
+                                <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
+                            </div>
+                            <div class="stat-value" data-target="180">0</div>
+                            <div class="stat-trend text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +12 this month</div>
+                        </div>
+                        <div class="stat-card pulse-accent">
+                            <div class="stat-header">
+                                <div class="stat-title text-accent">New RFQs</div>
+                                <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg></div>
+                            </div>
+                            <div class="stat-value" data-target="24">0</div>
+                            <div class="stat-trend text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +8 vs last week</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-title">Pending Enquiries</div>
+                                <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                            </div>
+                            <div class="stat-value" data-target="11">0</div>
+                            <div class="stat-trend text-amber"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Needs attention</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-title">Active Countries</div>
+                                <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg></div>
+                            </div>
+                            <div class="stat-value" data-target="15">0</div>
+                            <div class="stat-trend text-muted">Across 4 continents</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-title">Brochure Downloads</div>
+                                <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></div>
+                            </div>
+                            <div class="stat-value" data-target="73">0</div>
+                            <div class="stat-trend text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +18% this month</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-title">Monthly Visits</div>
+                                <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></div>
+                            </div>
+                            <div class="stat-value" data-target="3240">0</div>
+                            <div class="stat-trend text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> +22% vs last month</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Table -->
+                <section class="stagger-2">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent RFQ Leads</h2>
+                        <div style="display:flex;gap:12px;">
+                            <button class="btn-ghost action-btn">Export CSV</button>
+                            <button class="btn-ghost red action-btn">View All →</button>
+                        </div>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Company</th>
+                                        <th>Product Enquiry</th>
+                                        <th>Country</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Jio Platforms Ltd.</td><td>MPO-24 Trunk Cable</td><td>India</td><td>14 Apr 2025</td><td><span class="status-badge status-new">New</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                    <tr><td>Zain Telecom</td><td>PLC Splitter 1×32</td><td>Kuwait</td><td>12 Apr 2025</td><td><span class="status-badge status-review">In Review</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                    <tr><td>Vodafone Idea</td><td>OTDR Launch Cable</td><td>India</td><td>11 Apr 2025</td><td><span class="status-badge status-quoted">Quoted</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                    <tr><td>Orange Botswana</td><td>CWDM MUX 8CH</td><td>Botswana</td><td>10 Apr 2025</td><td><span class="status-badge status-new">New</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                    <tr><td>Etisalat Group</td><td>Armoured Patchcord</td><td>UAE</td><td>08 Apr 2025</td><td><span class="status-badge status-converted">Converted</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                    <tr><td>BSNL Corp</td><td>Fanout Patchcord SM</td><td>India</td><td>07 Apr 2025</td><td><span class="status-badge status-quoted">Quoted</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                    <tr><td>Sievert Larson Infra</td><td>FAT Box 16-Way</td><td>Nigeria</td><td>05 Apr 2025</td><td><span class="status-badge status-review">In Review</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                    <tr><td>MTN Uganda</td><td>CPRI Patchcord</td><td>Uganda</td><td>03 Apr 2025</td><td><span class="status-badge status-new">New</span></td><td><button class="btn-outline action-btn">View</button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: Products -->
+                <section class="stagger-3">
+                    <div class="section-header">
+                        <h2 class="section-title">Product Catalogue</h2>
+                        <div style="display:flex;gap:12px;">
+                            <button class="btn-outline action-btn">Export List</button>
+                            <button class="btn-quick action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg> Add Product</button>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                        <input type="text" class="search-input" placeholder="Search SKU or Name..." style="max-width: 240px; border-radius: 8px;">
+                        <select class="filter-select"><option>All Categories</option><option>Passive</option><option>Active</option></select>
+                        <select class="filter-select"><option>Sort by: Newest</option><option>Sort by: Name</option></select>
+                    </div>
+
+                    <div class="products-grid">
+                        <!-- Product 1 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Passive</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20h60v60H20z" stroke-dasharray="4 4"/><circle cx="50" cy="50" r="20"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 6h8v4H8V6zm-2 4h12v10H6V10zm4 4v2m4-2v2"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="MPO/MTP Trunk Cable">MPO/MTP Trunk Cable</div>
+                                <div class="product-sku">PDR-MPO-24T</div>
+                                <div class="product-actions">
+                                    <button class="btn-outline action-btn" style="flex:1;">Edit</button>
+                                    <button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+                                    <button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product 2 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Passive</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 50h30l20-30h30M40 50l20 30h30" stroke-dasharray="4 4"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="PLC Splitter 1×32 SC/APC">PLC Splitter 1×32 SC/APC</div>
+                                <div class="product-sku">PDR-PLC-132</div>
+                                <div class="product-actions"><button class="btn-outline action-btn" style="flex:1;">Edit</button><button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button><button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>
+                            </div>
+                        </div>
+                        <!-- Product 3 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Active</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="30" width="80" height="40" rx="4"/><circle cx="30" cy="50" r="5"/><circle cx="50" cy="50" r="5"/><circle cx="70" cy="50" r="5"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="CWDM Mux 8 Channel">CWDM Mux 8 Channel</div>
+                                <div class="product-sku">PDR-CWDM-8CH</div>
+                                <div class="product-actions"><button class="btn-outline action-btn" style="flex:1;">Edit</button><button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button><button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>
+                            </div>
+                        </div>
+                        <!-- Product 4 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Passive</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 50 Q 30 20 50 50 T 80 50" stroke-dasharray="2 6"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="Armoured Patchcord LC/PC">Armoured Patchcord LC/PC</div>
+                                <div class="product-sku">PDR-APC-LC</div>
+                                <div class="product-actions"><button class="btn-outline action-btn" style="flex:1;">Edit</button><button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button><button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>
+                            </div>
+                        </div>
+                        <!-- Product 5 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Test Equip</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="10"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l3-8 4 16 3-8h4"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="OTDR Launch Cable">OTDR Launch Cable</div>
+                                <div class="product-sku">PDR-OTDR-LC</div>
+                                <div class="product-actions"><button class="btn-outline action-btn" style="flex:1;">Edit</button><button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button><button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>
+                            </div>
+                        </div>
+                        <!-- Product 6 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Cable Mgmt</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><rect x="30" y="20" width="40" height="60" rx="2"/><path d="M30 40h40M30 60h40"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM4 10h16M4 14h16"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="3U Cassette Splitter Rack">3U Cassette Splitter Rack</div>
+                                <div class="product-sku">PDR-RACK-3U</div>
+                                <div class="product-actions"><button class="btn-outline action-btn" style="flex:1;">Edit</button><button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button><button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>
+                            </div>
+                        </div>
+                        <!-- Product 7 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Specialty</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><path d="M40 80v-40l10-20 10 20v40z"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="CPRI Patchcord IP67">CPRI Patchcord IP67</div>
+                                <div class="product-sku">PDR-CPRI-67</div>
+                                <div class="product-actions"><button class="btn-outline action-btn" style="flex:1;">Edit</button><button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button><button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>
+                            </div>
+                        </div>
+                        <!-- Product 8 -->
+                        <div class="product-card">
+                            <div class="thumb">
+                                <span class="thumb-badge">Cable Mgmt</span>
+                                <svg class="base" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2"><rect x="25" y="25" width="50" height="50" rx="8"/><circle cx="50" cy="50" r="10"/></svg>
+                                <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name" title="FAT Box 16-Way">FAT Box 16-Way</div>
+                                <div class="product-sku">PDR-FAT-16</div>
+                                <div class="product-actions"><button class="btn-outline action-btn" style="flex:1;">Edit</button><button class="btn-ghost action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button><button class="btn-ghost red action-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section 4: Content Management -->
+                <section class="stagger-4">
+                    <h2 class="section-title" style="margin-bottom: 20px;">Content Management</h2>
+                    <div class="content-grid">
+                        <div class="content-card action-btn">
+                            <div class="content-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg></div>
+                            <div class="content-text">
+                                <div class="content-title">Homepage Banner</div>
+                                <div class="content-desc">Update hero text and visuals</div>
+                            </div>
+                            <svg class="content-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <div class="content-card action-btn">
+                            <div class="content-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></div>
+                            <div class="content-text">
+                                <div class="content-title">About Section</div>
+                                <div class="content-desc">Company history and mission</div>
+                            </div>
+                            <svg class="content-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <div class="content-card action-btn">
+                            <div class="content-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg></div>
+                            <div class="content-text">
+                                <div class="content-title">Industries Served</div>
+                                <div class="content-desc">Telecom, Data Centers, etc.</div>
+                            </div>
+                            <svg class="content-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <div class="content-card action-btn">
+                            <div class="content-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
+                            <div class="content-text">
+                                <div class="content-title">Contact Information</div>
+                                <div class="content-desc">Locations, phones, emails</div>
+                            </div>
+                            <svg class="content-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <div class="content-card action-btn">
+                            <div class="content-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg></div>
+                            <div class="content-text">
+                                <div class="content-title">Certifications</div>
+                                <div class="content-desc">ISO, CE, RoHS compliance</div>
+                            </div>
+                            <svg class="content-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <div class="content-card action-btn">
+                            <div class="content-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg></div>
+                            <div class="content-text">
+                                <div class="content-title">Footer & Legal</div>
+                                <div class="content-desc">Terms, Privacy, Social links</div>
+                            </div>
+                            <svg class="content-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Quick Actions -->
+                <section class="stagger-5">
+                    <div class="quick-scroll">
+                        <button class="pill-btn primary action-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg> Add Product</button>
+                        <button class="pill-btn action-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Upload Brochure</button>
+                        <button class="pill-btn action-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg> Add Certification</button>
+                        <button class="pill-btn action-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> Post Job</button>
+                        <button class="pill-btn action-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> Export Leads</button>
+                        <button class="pill-btn action-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> Update Banner</button>
+                    </div>
+                </section>
+
+                <!-- Section 6: Analytics -->
+                <section class="stagger-6">
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Monthly RFQ Leads</div>
+                                <div class="chart-tag">Last 6 months</div>
+                            </div>
+                            <div class="chart-container">
+                                <svg viewBox="0 0 300 150" width="100%" height="100%">
+                                    <defs>
+                                        <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#F43F5E"/>
+                                            <stop offset="100%" stop-color="#E11D48"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Axes -->
+                                    <line x1="20" y1="130" x2="280" y2="130" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                                    <!-- Bars -->
+                                    <rect x="30" y="80" width="24" height="50" fill="url(#barGrad)" rx="3" class="chart-bar" />
+                                    <rect x="74" y="60" width="24" height="70" fill="url(#barGrad)" rx="3" class="chart-bar" />
+                                    <rect x="118" y="90" width="24" height="40" fill="url(#barGrad)" rx="3" class="chart-bar" />
+                                    <rect x="162" y="40" width="24" height="90" fill="url(#barGrad)" rx="3" class="chart-bar" />
+                                    <rect x="206" y="50" width="24" height="80" fill="url(#barGrad)" rx="3" class="chart-bar" />
+                                    <rect x="250" y="20" width="24" height="110" fill="url(#barGrad)" rx="3" class="chart-bar" />
+                                    <!-- Labels -->
+                                    <text x="42" y="145" fill="#71717A" font-size="11" text-anchor="middle" font-family="Inter">Nov</text>
+                                    <text x="86" y="145" fill="#71717A" font-size="11" text-anchor="middle" font-family="Inter">Dec</text>
+                                    <text x="130" y="145" fill="#71717A" font-size="11" text-anchor="middle" font-family="Inter">Jan</text>
+                                    <text x="174" y="145" fill="#71717A" font-size="11" text-anchor="middle" font-family="Inter">Feb</text>
+                                    <text x="218" y="145" fill="#71717A" font-size="11" text-anchor="middle" font-family="Inter">Mar</text>
+                                    <text x="262" y="145" fill="#71717A" font-size="11" text-anchor="middle" font-family="Inter">Apr</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Top Categories</div>
+                                <div class="chart-tag">Last 30 days</div>
+                            </div>
+                            <div class="chart-container" style="align-items: center; justify-content: center;">
+                                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                                    <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="24" />
+                                    <!-- Segments -->
+                                    <circle cx="100" cy="100" r="70" fill="none" stroke="#E11D48" stroke-width="24" stroke-dasharray="176 440" stroke-dashoffset="0" class="chart-segment" />
+                                    <circle cx="100" cy="100" r="70" fill="none" stroke="#F43F5E" stroke-width="24" stroke-dasharray="110 440" stroke-dashoffset="-176" class="chart-segment" />
+                                    <circle cx="100" cy="100" r="70" fill="none" stroke="#71717A" stroke-width="24" stroke-dasharray="66 440" stroke-dashoffset="-286" class="chart-segment" />
+                                    <circle cx="100" cy="100" r="70" fill="none" stroke="#52525B" stroke-width="24" stroke-dasharray="44 440" stroke-dashoffset="-352" class="chart-segment" />
+                                    <circle cx="100" cy="100" r="70" fill="none" stroke="#3F3F46" stroke-width="24" stroke-dasharray="44 440" stroke-dashoffset="-396" class="chart-segment" />
+                                    <!-- Center text -->
+                                    <text x="100" y="95" fill="white" font-size="24" font-weight="800" font-family="Manrope" text-anchor="middle">40%</text>
+                                    <text x="100" y="115" fill="#71717A" font-size="11" text-anchor="middle" font-family="Inter">Passive</text>
+                                </svg>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; font-size: 12px;">
+                                <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 10px; height: 10px; border-radius: 50%; background: #E11D48;"></div><span class="text-muted">Passive</span> <span style="margin-left: auto; font-weight: 600; color: white;">40%</span></div>
+                                <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 10px; height: 10px; border-radius: 50%; background: #F43F5E;"></div><span class="text-muted">Active</span> <span style="margin-left: auto; font-weight: 600; color: white;">22%</span></div>
+                                <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 10px; height: 10px; border-radius: 50%; background: #71717A;"></div><span class="text-muted">Cable Mgmt</span> <span style="margin-left: auto; font-weight: 600; color: white;">18%</span></div>
+                                <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 10px; height: 10px; border-radius: 50%; background: #52525B;"></div><span class="text-muted">Test Equip</span> <span style="margin-left: auto; font-weight: 600; color: white;">12%</span></div>
+                                <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 10px; height: 10px; border-radius: 50%; background: #3F3F46;"></div><span class="text-muted">Specialty</span> <span style="margin-left: auto; font-weight: 600; color: white;">8%</span></div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Enquiries by Country</div>
+                                <div class="chart-tag">Last 30 days</div>
+                            </div>
+                            <div class="chart-container">
+                                <svg viewBox="0 0 300 150" width="100%" height="100%">
+                                    <text x="0" y="25" fill="#A1A1AA" font-size="11" font-family="Inter">India</text>
+                                    <rect x="60" y="15" width="200" height="12" fill="#E11D48" rx="2" class="chart-hbar" />
+                                    <text x="266" y="25" fill="white" font-size="11" font-family="Inter" font-weight="600">42%</text>
+                                    
+                                    <text x="0" y="55" fill="#A1A1AA" font-size="11" font-family="Inter">UAE</text>
+                                    <rect x="60" y="45" width="86" height="12" fill="#F43F5E" rx="2" class="chart-hbar" />
+                                    <text x="152" y="55" fill="white" font-size="11" font-family="Inter" font-weight="600">18%</text>
+                                    
+                                    <text x="0" y="85" fill="#A1A1AA" font-size="11" font-family="Inter">Kuwait</text>
+                                    <rect x="60" y="75" width="57" height="12" fill="#71717A" rx="2" class="chart-hbar" />
+                                    <text x="123" y="85" fill="white" font-size="11" font-family="Inter" font-weight="600">12%</text>
+                                    
+                                    <text x="0" y="115" fill="#A1A1AA" font-size="11" font-family="Inter">Nigeria</text>
+                                    <rect x="60" y="105" width="43" height="12" fill="#52525B" rx="2" class="chart-hbar" />
+                                    <text x="109" y="115" fill="white" font-size="11" font-family="Inter" font-weight="600">9%</text>
+                                    
+                                    <text x="0" y="145" fill="#A1A1AA" font-size="11" font-family="Inter">Uganda</text>
+                                    <rect x="60" y="135" width="38" height="12" fill="#3F3F46" rx="2" class="chart-hbar" />
+                                    <text x="104" y="145" fill="white" font-size="11" font-family="Inter" font-weight="600">8%</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <footer style="margin-top: 40px; text-align: center; color: #52525B; font-size: 12px; padding-bottom: 20px;">
+                    &copy; 2025 PDR Videotronics India Pvt. Ltd. · Admin System v1.0
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const loginBtn = document.getElementById('login-btn');
+            const loginScreen = document.getElementById('login-screen');
+            const dashboardScreen = document.getElementById('dashboard-screen');
+            const toastContainer = document.getElementById('toast-container');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+
+            // --- LOGIN FLOW ---
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                loginBtn.classList.add('loading');
+                
+                // Simulate network request
+                setTimeout(() => {
+                    // Fade out login
+                    loginScreen.style.transform = 'scale(0.97)';
+                    loginScreen.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        loginScreen.style.display = 'none';
+                        // Reveal dashboard
+                        dashboardScreen.style.opacity = '1';
+                        dashboardScreen.style.pointerEvents = 'auto';
+                        dashboardScreen.classList.add('is-loaded');
+                        
+                        // Animate counters
+                        animateCounters();
+                    }, 300);
+                }, 400);
+            });
+
+            // --- COUNTER ANIMATION ---
+            function animateCounters() {
+                const counters = document.querySelectorAll('.stat-value');
+                const duration = 1800; // 1.8s
+
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    let startTime = null;
+
+                    function updateCount(timestamp) {
+                        if (!startTime) startTime = timestamp;
+                        const progress = timestamp - startTime;
+                        
+                        // Ease out cubic
+                        const easeOut = 1 - Math.pow(1 - Math.min(progress / duration, 1), 3);
+                        const current = Math.floor(easeOut * target);
+                        
+                        counter.innerText = current > 999 ? current.toLocaleString() : current;
+
+                        if (progress < duration) {
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            counter.innerText = target > 999 ? target.toLocaleString() : (target + (target === 180 || target === 15 ? '+' : ''));
+                        }
+                    }
+                    requestAnimationFrame(updateCount);
+                });
+            }
+
+            // --- TOAST SYSTEM ---
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = `
+                    <svg class="toast-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span class="toast-text">${message}</span>
+                `;
+                
+                toastContainer.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.add('fade-out');
+                    setTimeout(() => {
+                        if (toastContainer.contains(toast)) {
+                            toastContainer.removeChild(toast);
+                        }
+                    }, 400);
+                }, 3000);
+            }
+
+            // Attach toast to all action buttons
+            document.body.addEventListener('click', (e) => {
+                const btn = e.target.closest('.action-btn');
+                if (btn) {
+                    e.preventDefault();
+                    showToast('Feature available in v2.0');
+                }
+            });
+
+            // --- MOBILE MENU ---
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('mobile-open');
+                });
+            }
+
+            // Close sidebar if clicked outside on mobile
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        sidebar.classList.remove('mobile-open');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

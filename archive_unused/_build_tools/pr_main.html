@@ -1,0 +1,214 @@
+<main>
+<style>
+/* ===== PRODUCTS PAGE SCOPED STYLES (pr- prefix) ===== */
+.pr-hero{background:var(--bg);color:#fff;padding:140px 0 72px}
+.pr-hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.pr-hero-stats{display:flex;gap:0;flex-wrap:wrap;margin-top:28px;font-size:13px;color:#A1A1AA}
+.pr-hero-stats span{padding:0 12px;border-left:1px solid rgba(255,255,255,.15)}
+.pr-hero-stats span:first-child{padding-left:0;border-left:none}
+.pr-cat-nav-panel{border-radius:18px;border:1px solid var(--line-dark);background:var(--bg-2);padding:28px}
+.pr-cat-pill{display:flex;align-items:center;justify-content:space-between;width:100%;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line-dark);padding:16px 20px;margin-bottom:8px;transition:all .2s;color:#fff;text-decoration:none}
+.pr-cat-pill:last-child{margin-bottom:0}
+.pr-cat-pill:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
+.pr-cat-pill-left{display:flex;align-items:center;gap:12px}
+.pr-cat-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.pr-cat-pill-name{font-family:'Manrope',sans-serif;font-weight:700;font-size:15px}
+.pr-cat-pill-right{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.pr-sticky-nav{position:sticky;top:76px;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:0}
+.pr-tab-row{display:flex;overflow-x:auto;gap:0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pr-tab-row::-webkit-scrollbar{display:none}
+.pr-tab{padding:16px 20px;font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s;text-decoration:none;display:block}
+.pr-tab:hover,.pr-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.pr-sub-head{border-left:3px solid var(--accent);padding-left:16px;margin-bottom:28px;font-size:22px}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pr-pcard{background:#fff;border:1px solid var(--line);border-radius:var(--rad);overflow:hidden;display:flex;flex-direction:column;transition:all .35s var(--ease)}
+.pr-pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#D4D4D8}
+.pr-pcard-art{height:140px;background:linear-gradient(135deg,#18181B,#27272A);display:grid;place-items:center;position:relative;overflow:hidden}
+.pr-pcard-art::after{content:"";position:absolute;width:80px;height:80px;background:radial-gradient(circle,rgba(225,29,72,.15),transparent);border-radius:50%}
+.pr-pcard-art svg{position:relative;z-index:1}
+.pr-prod-tag{position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.05em;z-index:2}
+.pr-pcard-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column}
+.pr-pcard-body h3{font-size:15px;margin-bottom:6px}
+.pr-pcard-body>p{font-size:13px;color:var(--muted);flex:1;margin-bottom:16px;line-height:1.55}
+.pr-spec-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pr-spec-pill{font-size:10px;font-weight:700;color:var(--muted);background:var(--surface-3);padding:3px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.05em}
+.pr-prod-cta{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--line)}
+.pr-prod-cta a{color:var(--accent);font-size:13px;font-weight:700;text-decoration:none;transition:color .2s}
+.pr-prod-cta a:hover{color:var(--accent-2)}
+.pr-drawer-backdrop{position:fixed;inset:0;background:rgba(9,9,11,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s}
+.pr-drawer-backdrop.open{opacity:1;pointer-events:auto}
+.pr-drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,95vw);background:var(--bg-2);z-index:2001;transform:translateX(100%);transition:transform .4s var(--ease);box-shadow:-10px 0 40px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+.pr-drawer.open{transform:translateX(0)}
+.pr-drawer-head{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;background:rgba(24,24,27,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.pr-drawer-head .pr-close{background:none;border:none;color:#A1A1AA;font-size:28px;cursor:pointer;line-height:1;transition:color .2s}
+.pr-drawer-head .pr-close:hover{color:var(--accent)}
+.pr-drawer-body{padding:32px 24px;overflow-y:auto;flex:1}
+.pr-drawer-img{height:220px;background:linear-gradient(135deg,#18181B,#27272A);border-radius:12px;display:grid;place-items:center;margin-bottom:28px}
+.pr-feat-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.pr-feat-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#fff}
+.pr-feat-list li svg{flex-shrink:0;margin-top:2px}
+.pr-spec-table{margin-bottom:28px;border-radius:8px;overflow:hidden}
+.pr-spec-trow{display:flex;padding:10px 14px;gap:12px}
+.pr-spec-trow:nth-child(odd){background:rgba(0,0,0,.3)}
+.pr-spec-tkey{font-weight:600;font-size:13px;width:160px;flex-shrink:0;color:#fff}
+.pr-spec-tval{font-size:13px;color:#A1A1AA;flex:1}
+.pr-app-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.pr-app-tag{background:rgba(255,255,255,.06);padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600;color:#A1A1AA;border:1px solid rgba(255,255,255,.08)}
+.pr-drawer-cta{border-top:1px solid rgba(255,255,255,.08);padding:20px 24px;background:var(--bg-2);display:flex;gap:12px}
+.pr-trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pr-trust-tile{background:rgba(255,255,255,.04);border:1px solid var(--line-dark);border-radius:var(--rad);padding:28px;text-align:center}
+.pr-trust-tile .stat-num{font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(28px,3vw,40px);color:#fff}
+.pr-trust-tile .stat-label{font-size:14px;color:#A1A1AA;margin-top:4px}
+.pr-drone-feature{background:rgba(255,255,255,.04);border:1px solid var(--line-dark);border-radius:20px;padding:48px;max-width:780px;margin:0 auto}
+.pr-drone-features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}
+.pr-drone-features li{font-size:14px;color:#A1A1AA;display:flex;align-items:flex-start;gap:8px}
+.pr-drone-features li svg{flex-shrink:0;margin-top:2px;color:var(--accent)}
+@media(max-width:900px){
+  .pr-hero-grid{grid-template-columns:1fr;gap:32px}
+  .pr-grid{grid-template-columns:repeat(2,1fr)}
+  .pr-drone-features{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .pr-grid{grid-template-columns:1fr}
+  .pr-hero-stats{flex-direction:column;gap:6px}
+  .pr-hero-stats span{border-left:none;padding-left:0}
+  .pr-drawer{width:100vw}
+  .pr-spec-trow{flex-direction:column;gap:4px}
+  .pr-spec-tkey{width:auto}
+  .pr-trust-grid{grid-template-columns:1fr}
+}
+</style>
+
+<!-- ===== SECTION 1: PAGE HERO ===== -->
+<section class="pr-hero">
+  <div class="container">
+    <div class="pr-hero-grid">
+      <div>
+        <div class="eyebrow">Product Catalogue &middot; 50+ Families</div>
+        <h1>The complete fibre optic stack. Made in Mumbai.</h1>
+        <p style="font-size:18px;color:#A1A1AA;margin-top:18px;max-width:520px">Active components, passive assemblies, cable management, and test equipment &mdash; manufactured and tested in-house since 1985.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px">
+          <a class="btn btn-primary" href="contact.html">Request a Quote</a>
+          <a class="btn btn-ghost" href="#active">Browse Catalogue &darr;</a>
+        </div>
+        <div class="pr-hero-stats">
+          <span>50+ Product Families</span>
+          <span>3,000+ Buyers</span>
+          <span>ISO 9001:2015</span>
+          <span>Ships Same Day</span>
+        </div>
+      </div>
+      <div class="pr-cat-nav-panel">
+        <a class="pr-cat-pill" href="#active"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Active Components</span></span><span class="pr-cat-pill-right">15+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#passive"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Passive Components</span></span><span class="pr-cat-pill-right">40+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#cable"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Cable Management Devices</span></span><span class="pr-cat-pill-right">12+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#test"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Test &amp; Measuring Equipment</span></span><span class="pr-cat-pill-right">10+ SKUs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+        <a class="pr-cat-pill" href="#drone"><span class="pr-cat-pill-left"><span class="pr-cat-dot"></span><span class="pr-cat-pill-name">Optical Fiber Drone</span></span><span class="pr-cat-pill-right"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: STICKY CATEGORY NAV ===== -->
+<nav class="pr-sticky-nav" id="prStickyNav">
+  <div class="container">
+    <div class="pr-tab-row">
+      <a class="pr-tab active" href="#active" data-target="active">Active Components</a>
+      <a class="pr-tab" href="#passive" data-target="passive">Passive Components</a>
+      <a class="pr-tab" href="#cable" data-target="cable">Cable Management</a>
+      <a class="pr-tab" href="#test" data-target="test">Test &amp; Measuring</a>
+      <a class="pr-tab" href="#drone" data-target="drone">Optical Fiber Drone</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== SECTION 3: ACTIVE COMPONENTS ===== -->
+<section class="section sec-muted reveal" id="active">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Active Components</div>
+      <h2>SFP Transceivers, OLP &amp; High-Speed Interfaces</h2>
+      <p>Manufactured and tested at our Mumbai facility. Compatible with major OEM switches, routers, and DWDM platforms.</p>
+    </div>
+
+    <h3 class="pr-sub-head">SFP Transceivers</h3>
+    <div class="pr-grid">
+
+      <div class="pr-pcard reveal" data-product="sfp-transceivers">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">SFP</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="16" width="32" height="16" rx="3"/><rect x="4" y="20" width="6" height="8" rx="1"/><rect x="38" y="20" width="6" height="8" rx="1"/><line x1="14" y1="24" x2="34" y2="24"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Fiber Optic Transceivers (SFP)</h3>
+          <p>High performance and cost effective modules for serial optical data communication applications.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">Multi-Rate</span><span class="pr-spec-pill">Hot-Swappable</span><span class="pr-spec-pill">DOM Support</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('sfp-transceivers');return false">Inquire Now</a><a href="#" onclick="openDrawer('sfp-transceivers');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 class="pr-sub-head" style="margin-top:48px">Other Active Components</h3>
+    <div class="pr-grid">
+
+      <div class="pr-pcard reveal" data-product="bypass-switch">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">Active</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="12" y="12" width="24" height="24" rx="4"/><path d="M18 24h12"/><path d="M24 18v12"/><circle cx="12" cy="24" r="3"/><circle cx="36" cy="24" r="3"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Bypass Switch</h3>
+          <p>Optical path control equipment which can automatic bypass the optical path in case the protected optical device is failure.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">Auto Bypass</span><span class="pr-spec-pill">Path Control</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('bypass-switch');return false">Inquire Now</a><a href="#" onclick="openDrawer('bypass-switch');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="olps">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">OLP</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="14" width="28" height="20" rx="3"/><path d="M16 24h16"/><path d="M24 19v10"/><circle cx="10" cy="24" r="2"/><circle cx="38" cy="24" r="2"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Optical Line Protection System</h3>
+          <p>Uses spare optical fiber from different route to build a backup path for network protection.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">Backup Path</span><span class="pr-spec-pill">Auto Switch</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('olps');return false">Inquire Now</a><a href="#" onclick="openDrawer('olps');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="dac">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">DAC</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="4" y="18" width="12" height="12" rx="2"/><rect x="32" y="18" width="12" height="12" rx="2"/><path d="M16 24h16" stroke-dasharray="4 2"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Direct Attached Cable (DAC)</h3>
+          <p>SFP-10G-DAC hot-swappable direct attach copper cable assembly (Twinax Cable) with SFP+ connectors.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">SFP+ 10G</span><span class="pr-spec-pill">Hot-Swappable</span><span class="pr-spec-pill">Twinax</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('dac');return false">Inquire Now</a><a href="#" onclick="openDrawer('dac');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="aoc">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">AOC</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="4" y="18" width="12" height="12" rx="2"/><rect x="32" y="18" width="12" height="12" rx="2"/><path d="M16 24c4-4 12 4 16 0"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>Active Optical Cable (AOC)</h3>
+          <p>100G QSFP28 AOC assemblies offer a highly reliable and cost-effective alternative to transceiver assemblies.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">100G QSFP28</span><span class="pr-spec-pill">Up to 100m</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('aoc');return false">Inquire Now</a><a href="#" onclick="openDrawer('aoc');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="hd-sdi">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">HD-SDI</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="14" width="32" height="20" rx="3"/><circle cx="24" cy="24" r="5"/><line x1="14" y1="30" x2="34" y2="30"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>HD-SDI Optical Transceiver</h3>
+          <p>PDR8010SG SD/HD/3G-SDI broadcasting grade HD Transceiver which can interconvert SD/HD/3G-SDI signals.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">SD/HD/3G-SDI</span><span class="pr-spec-pill">Broadcast</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('hd-sdi');return false">Inquire Now</a><a href="#" onclick="openDrawer('hd-sdi');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="pr-pcard reveal" data-product="poe-injector">
+        <div class="pr-pcard-art"><span class="pr-prod-tag">PoE</span><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="14" width="28" height="20" rx="3"/><path d="M20 20v8"/><path d="M28 20v8"/><path d="M24 17v14"/></svg></div>
+        <div class="pr-pcard-body">
+          <h3>PoE Injector</h3>
+          <p>Power over Ethernet injector for optical networking and broadcasting applications.</p>
+          <div class="pr-spec-row"><span class="pr-spec-pill">PoE</span><span class="pr-spec-pill">Networking</span></div>
+          <div class="pr-prod-cta"><a href="#" onclick="openDrawer('poe-injector');return false">Inquire Now</a><a href="#" onclick="openDrawer('poe-injector');return false">Details &rarr;</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
