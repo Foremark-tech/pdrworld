@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -360,6 +360,11 @@
       .rfq{padding:24px 20px;border-radius:14px}
     }
   
+    /* Canvas fallback: gradient shown before frames load */
+    #fiberCanvas{
+      background:linear-gradient(135deg,#0a0a2e 0%,#1a1a4e 50%,#0a0a2e 100%);
+    }
+
     /* Fiber Scrollytelling */
     .fiber-scroll-zone {
       height: 700vh;
@@ -475,10 +480,97 @@
 
 
     @media (max-width:768px){
-      .fiber-scroll-zone{height:520vh}
-      
-      /* All beats stack at bottom of screen as a tray */
-      .fiber-beat{
+      /* ── Mobile Hero Redesign (Restored Premium Layout) ── */
+      .fiber-scroll-zone{height:400vh}
+
+      .fiber-sticky{
+        height:auto;
+        min-height:0;
+        display:flex;
+        flex-direction:column;
+      }
+      #fiberCanvas{
+        position:relative;
+        width:100%;
+        height:45vh; /* slightly shorter to ensure card fits */
+        min-height:280px;
+        max-height:400px;
+        border-radius:0 0 24px 24px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        z-index: 2;
+      }
+
+      /* ── Beat 1: Static mobile hero panel ── */
+      #beat1{
+        position:relative !important;
+        inset:auto !important;
+        width:100% !important;
+        z-index:10;
+        padding:0 !important;
+        animation:mobileHeroFadeIn .8s ease both;
+      }
+      @keyframes mobileHeroFadeIn{
+        from{opacity:0;transform:translateY(16px)}
+        to{opacity:1;transform:translateY(0)}
+      }
+      #beat1 .beat-inner{
+        width:100% !important;
+        max-width:100% !important;
+        background:#fff !important;
+        border:none !important;
+        border-radius:0 !important;
+        backdrop-filter:none !important;
+        -webkit-backdrop-filter:none !important;
+        padding:32px 20px 24px !important;
+        text-align:center !important;
+      }
+      #beat1 .eyebrow{
+        font-size:10px;
+        margin-bottom:14px;
+        justify-content:center !important;
+      }
+      #beat1 .beat-head{
+        font-size:clamp(24px, 6.5vw, 32px) !important;
+        margin-bottom:12px;
+        line-height:1.2;
+      }
+      #beat1 .beat-body{
+        font-size:14px;
+        line-height:1.6;
+        margin-bottom:24px;
+        color:#475569;
+        display:block !important;
+        -webkit-line-clamp:unset !important;
+        overflow:visible !important;
+      }
+      #beat1 .beat-inner > div[style*="display:flex"]{
+        flex-direction:column !important;
+        gap:12px !important;
+      }
+      #beat1 .btn{
+        width:100%;
+        font-size:15px;
+        padding:14px 20px;
+        border-radius:10px;
+      }
+      #beat1 .btn-outline{
+        border-color:var(--line);
+        background:#fff;
+        color:var(--ink);
+      }
+      #beat1 .hero-status{
+        font-size:11px;
+        padding:6px 12px;
+        margin-top:20px;
+        display:inline-flex;
+      }
+
+      /* Hide duplicate floating CTA */
+      .float-cta{display:none !important}
+
+      /* ── Other beats: bottom overlay trays ── */
+      /* Make them solid white to completely cover beat1 without messy overlay */
+      .fiber-beat:not(#beat1){
         position:absolute;
         bottom:0 !important;
         left:0 !important;
@@ -486,75 +578,65 @@
         top:auto !important;
         transform:none !important;
         width:100% !important;
-        padding:0;
-        z-index:10;
+        padding:0 !important;
+        z-index:20; /* High z-index to cover beat1 fully */
         align-items:flex-end;
       }
-      .beat-inner{
-        width:100%;
-        max-width:none !important;
+      .fiber-beat:not(#beat1) .beat-inner{
+        width:100% !important;
+        max-width:100% !important;
         text-align:left !important;
-        border-radius:16px 16px 0 0;
-        padding:20px 20px 28px;
-        background:rgba(255,255,255,0.95) !important;
-        backdrop-filter:blur(24px);
-        -webkit-backdrop-filter:blur(24px);
-        border:none;
-        border-top:1px solid rgba(7,0,143,0.06);
+        border-radius:24px 24px 0 0 !important;
+        padding:28px 20px 32px !important;
+        background:#ffffff !important; /* Solid white */
+        border:none !important;
+        box-shadow: 0 -8px 40px rgba(0,0,0,0.12) !important; /* Premium shadow */
       }
-      .beat-head{
+      .fiber-beat:not(#beat1) .beat-head{
         font-size:clamp(20px,5.5vw,26px) !important;
         margin-bottom:10px;
+        line-height:1.25;
       }
-      .beat-body{
-        font-size:14px;
-        line-height:1.6;
-        margin-bottom:16px;
-        display:-webkit-box;
-        -webkit-line-clamp:3;
-        -webkit-box-orient:vertical;
-        overflow:hidden;
-      }
-      .beat-inner .btn{
-        width:100%;
-        margin-bottom:8px;
-        font-size:14px;
-        padding:14px 20px;
-      }
-      .beat-inner > div[style*="display:flex"]{
-        flex-direction:column;
-        gap:8px;
-      }
-      .spec-pills-row{
-        justify-content:flex-start !important;
-        gap:6px;
+      .fiber-beat:not(#beat1) .beat-body{
+        font-size:14px !important;
+        line-height:1.6 !important;
+        margin-bottom:16px !important;
+        color:#475569 !important;
+        display:block !important; /* Fix truncation */
+        -webkit-line-clamp:unset !important;
+        overflow:visible !important;
       }
       .spec-pill{
         font-size:10px;
         padding:4px 10px;
       }
+      .spec-pills-row{
+        justify-content:flex-start !important;
+        gap:6px;
+        flex-wrap:wrap;
+      }
       .hero-status{
         font-size:11px;
         padding:6px 10px;
-        margin-top:12px;
+        margin-top:10px;
       }
+      
+      /* Beat 7 specific overrides */
+      #beat7 .beat-inner > div[style*="display:flex"]{
+        flex-direction:column !important;
+        gap:10px !important;
+      }
+      #beat7 .btn{
+        width:100%;
+        font-size:14px;
+        padding:14px 18px;
+      }
+      #beat7 .beat-head{
+        font-size:clamp(22px, 5.5vw, 28px) !important;
+      }
+      
       .core-pulse-overlay{width:160px;height:160px}
       .fiber-svg{display:none}
-      
-      /* beat1 specific — center-bottom hero panel */
-      #beat1{
-        bottom:0 !important;
-        left:0 !important;
-        transform:none !important;
-        width:100% !important;
-      }
-      /* beat7 specific */
-      #beat7{
-        bottom:0 !important;
-        left:0 !important;
-        transform:none !important;
-        width:100% !important;
-      }
       .beat-label{font-size:10px;letter-spacing:.1em;margin-bottom:8px}
       .eyebrow{font-size:10px;margin-bottom:12px}
     }
@@ -825,82 +907,6 @@
       }
     }
 
-    @media (max-width: 768px) {
-      /* Override ALL inline positioning styles on every beat */
-      .fiber-beat {
-        position: absolute !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        top: auto !important;
-        transform: none !important;
-        width: 100% !important;
-        padding: 0 !important;
-      }
-      .beat-inner {
-        width: 100% !important;
-        max-width: 100% !important;
-        text-align: left !important;
-        border-radius: 0 !important;
-        padding: 18px 20px 24px !important;
-        background: rgba(255,255,255,0.96) !important;
-        border: none !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-      }
-      .beat-head {
-        font-size: 22px !important;
-        margin-bottom: 8px;
-        line-height: 1.25;
-      }
-      .beat-body {
-        font-size: 13px;
-        line-height: 1.6;
-        margin-bottom: 12px;
-        /* clamp to 3 lines so panel doesn't get too tall */
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      .spec-pill {
-        font-size: 10px;
-        padding: 4px 10px;
-      }
-      .spec-pills-row {
-        justify-content: flex-start !important;
-        gap: 5px;
-        flex-wrap: wrap;
-      }
-      .hero-status {
-        font-size: 11px;
-        padding: 6px 10px;
-        margin-top: 10px;
-      }
-      /* Beat1 & Beat7 CTA buttons: stack vertically */
-      #beat1 .beat-inner > div[style*="display:flex"],
-      #beat7 .beat-inner > div[style*="display:flex"] {
-        flex-direction: column !important;
-        gap: 8px !important;
-      }
-      #beat1 .btn,
-      #beat7 .btn {
-        width: 100%;
-        font-size: 14px;
-        padding: 13px 18px;
-      }
-      /* Beat1: eyebrow smaller */
-      #beat1 .eyebrow {
-        font-size: 10px;
-        margin-bottom: 8px;
-      }
-      #beat1 .beat-head {
-        font-size: clamp(22px, 5.5vw, 28px) !important;
-      }
-      /* Beat7: reduce heading */
-      #beat7 .beat-head {
-        font-size: clamp(22px, 5.5vw, 28px) !important;
-      }
-    }
 
     @media (max-width: 768px) {
       .mfg-img.tall img {
@@ -1359,14 +1365,14 @@
     ctx.fillRect(0,0,canvas.width,canvas.height);
   }
 
-  /* Fallback: draw dark bg with text when no frames */
+  /* Fallback: clean gradient while frames load (no text, no black) */
   function drawFallback(){
-    ctx.fillStyle='#09090B';
+    var grad = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+    grad.addColorStop(0,'#0a0a2e');
+    grad.addColorStop(0.5,'#1a1a4e');
+    grad.addColorStop(1,'#0a0a2e');
+    ctx.fillStyle = grad;
     ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.font='16px Inter, sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('Loading fiber assets\u2026',canvas.width/2,canvas.height/2);
   }
 
   /* Load frames */
@@ -1409,11 +1415,14 @@
     return Math.max(0, Math.min(1, scrolled/total));
   }
 
+  var isMobile = window.innerWidth <= 768;
+  window.addEventListener('resize', function(){ isMobile = window.innerWidth <= 768; });
+
   function render(){
     var p = getProgress();
     var BEAT_COUNT = 7;
 
-    /* Frame index: map scroll progress linearly to 0–239 */
+    /* Frame index: map scroll progress linearly to 0-239 */
     var frameIdx = Math.min(Math.floor(p * FRAME_COUNT), FRAME_COUNT - 1);
     var frameFrac = (p * FRAME_COUNT) - frameIdx;
 
@@ -1436,6 +1445,12 @@
 
     for(var b=0;b<beats.length;b++){
       if(beats[b]){
+        /* On mobile, beat1 is static — never hide it via JS */
+        if(isMobile && b === 0){
+          beats[b].style.opacity = '1';
+          beats[b].style.pointerEvents = 'auto';
+          continue;
+        }
         if(b===beatIdx){
           beats[b].style.opacity='1';
           beats[b].style.pointerEvents='auto';
@@ -1470,11 +1485,19 @@
     }
   }, {passive:true});
 
-  /* Initial render */
-  setTimeout(function(){
-    if(!allLoaded) drawFallback();
-    render();
-  }, 100);
+  /* Initial render — draw immediately, no delay */
+  drawFallback();
+  render();
+
+  /* Also render as soon as first frame loads */
+  var firstFrameRendered = false;
+  var origOnLoad = onFrameLoad;
+  function earlyRender(){
+    if(!firstFrameRendered && frames[0] && frames[0].complete){
+      firstFrameRendered = true;
+      render();
+    }
+  }
 })();
 </script>
 </main>
