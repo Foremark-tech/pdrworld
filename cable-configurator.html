@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0C1220">
+  <title>Custom Cable Configurator | PDR World</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="phase5-polish.css">
+  <link rel="stylesheet" href="phase6-final.css">
+  <link rel="stylesheet" href="premium-tools.css">
+</head>
+
+<body>
+
+  <header class="site-header" id="top">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="PDR World home">
+        <span class="brand-mark">PDR</span>
+        <span>PDR World<small>Videotronics India &middot; Since 1985</small></span>
+      </a>
+      <nav class="nav-center" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="cable-configurator.html" class="active" style="color:var(--accent)">Configurator Tools</a>
+        <a href="fiber-selector.html">Fiber Selector</a>
+        <a href="products.html">All Products</a>
+      </nav>
+      <div class="nav-right">
+        <a class="btn btn-primary" href="contact.html">Request Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: 120px; padding-bottom: 80px;">
+    <div class="container">
+      <div class="sec-head">
+        <div class="eyebrow">Interactive Builder</div>
+        <h2>Custom Cable Configurator</h2>
+        <p>Configure custom fiber optic cable assemblies. Real-time validation and instant quoting.</p>
+      </div>
+
+      <div class="conf-layout">
+        <!-- Left: Visualizer -->
+        <div class="conf-visualizer">
+          <div class="conf-summary-pill" id="conf-live-spec">Select Fiber Type</div>
+          <img id="conf-preview-img" src="images/fiber-patchcord.png" alt="Cable Preview" />
+          <h3 style="margin-top: 24px; font-size: 18px;" id="conf-preview-title">Custom Assembly</h3>
+          <p style="color: var(--muted); font-size: 14px; margin-top: 8px;">Estimated Lead Time: 2-3 Days (Mumbai Factory)</p>
+        </div>
+
+        <!-- Right: Wizard -->
+        <div class="conf-wizard">
+
+          <!-- STEP 1: FIBER TYPE -->
+          <div class="conf-step active" id="step-1">
+            <h3>Step 1: Fiber Type</h3>
+            <p style="color:var(--muted); font-size:14px;">Select the core fiber specification.</p>
+            <div class="conf-options">
+              <div class="conf-opt" onclick="selectOption('fiber', 'OS2', this)">
+                <h4>Single-mode OS2</h4>
+                <p>9/125µm. Yellow Jacket. Up to 100km.</p>
+              </div>
+              <div class="conf-opt" onclick="selectOption('fiber', 'OM3', this)">
+                <h4>Multi-mode OM3</h4>
+                <p>50/125µm. Aqua Jacket. 10G up to 300m.</p>
+              </div>
+              <div class="conf-opt" onclick="selectOption('fiber', 'OM4', this)">
+                <h4>Multi-mode OM4</h4>
+                <p>50/125µm. Magenta Jacket. 10G up to 400m.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: CONNECTOR -->
+          <div class="conf-step" id="step-2">
+            <h3>Step 2: Connector Ends</h3>
+            <p style="color:var(--muted); font-size:14px;">Select termination for End A and End B.</p>
+            <div class="conf-options">
+              <div class="conf-opt" onclick="selectOption('connector', 'LC-LC', this)">
+                <h4>LC to LC</h4>
+                <p>High density. Push-pull latch.</p>
+              </div>
+              <div class="conf-opt" onclick="selectOption('connector', 'SC-SC', this)">
+                <h4>SC to SC</h4>
+                <p>Standard density. Push-pull.</p>
+              </div>
+              <div class="conf-opt" onclick="selectOption('connector', 'LC-SC', this)">
+                <h4>LC to SC</h4>
+                <p>Hybrid termination.</p>
+              </div>
+              <div class="conf-opt" id="opt-mpo" onclick="selectOption('connector', 'MPO', this)">
+                <h4>MPO/MTP</h4>
+                <p>12 or 24 fiber high density.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: LENGTH -->
+          <div class="conf-step" id="step-3">
+            <h3>Step 3: Length</h3>
+            <p style="color:var(--muted); font-size:14px;">Select total cable length end-to-end.</p>
+            <div class="conf-options">
+              <div class="conf-opt" onclick="selectOption('length', '1m', this)">
+                <h4>1 Meter</h4>
+              </div>
+              <div class="conf-opt" onclick="selectOption('length', '3m', this)">
+                <h4>3 Meters</h4>
+              </div>
+              <div class="conf-opt" onclick="selectOption('length', '5m', this)">
+                <h4>5 Meters</h4>
+              </div>
+              <div class="conf-opt" onclick="selectOption('length', '10m', this)">
+                <h4>10 Meters</h4>
+              </div>
+              <div class="conf-opt" onclick="selectOption('length', 'Custom', this)">
+                <h4>Custom Length</h4>
+                <p>Specify in notes</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4: JACKET -->
+          <div class="conf-step" id="step-4">
+            <h3>Step 4: Jacket / Environment</h3>
+            <p style="color:var(--muted); font-size:14px;">Select the physical cable protection.</p>
+            <div class="conf-options">
+              <div class="conf-opt" onclick="selectOption('jacket', 'LSZH', this)">
+                <h4>LSZH (Standard)</h4>
+                <p>Low Smoke Zero Halogen. Indoor use.</p>
+              </div>
+              <div class="conf-opt" onclick="selectOption('jacket', 'Armored', this)">
+                <h4>Steel Armored</h4>
+                <p>Crush resistant. Tactical/Harsh environment.</p>
+              </div>
+              <div class="conf-opt" onclick="selectOption('jacket', 'Outdoor', this)">
+                <h4>Outdoor PE</h4>
+                <p>UV resistant. Waterproof.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 5: REVIEW -->
+          <div class="conf-step" id="step-5">
+            <h3>Review & Add to Quote</h3>
+            <div
+              style="background:var(--surface-2); padding:24px; border-radius:12px; margin-top:24px; border:1px solid var(--line);">
+              <div
+                style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid var(--line); padding-bottom:12px;">
+                <span style="font-weight:600; color:var(--muted); font-size:14px;">Fiber Type</span>
+                <strong id="rev-fiber">-</strong>
+              </div>
+              <div
+                style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid var(--line); padding-bottom:12px;">
+                <span style="font-weight:600; color:var(--muted); font-size:14px;">Connectors</span>
+                <strong id="rev-connector">-</strong>
+              </div>
+              <div
+                style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid var(--line); padding-bottom:12px;">
+                <span style="font-weight:600; color:var(--muted); font-size:14px;">Length</span>
+                <strong id="rev-length">-</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between;">
+                <span style="font-weight:600; color:var(--muted); font-size:14px;">Jacket</span>
+                <strong id="rev-jacket">-</strong>
+              </div>
+            </div>
+            <div style="margin-top: 24px;">
+              <label style="display:block; font-size:13px; font-weight:600; margin-bottom:8px;">Quantity</label>
+              <input type="number" id="conf-qty" value="1" min="1"
+                style="padding:12px; border-radius:8px; border:1px solid var(--line); width:100px; font-size:16px;">
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          <div class="conf-nav">
+            <button class="btn btn-outline" id="btn-back" style="visibility:hidden;" onclick="prevStep()">&larr; Back</button>
+            <button class="btn btn-primary" id="btn-next" disabled onclick="nextStep()">Next Step &rarr;</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="configurator-app.js"></script>
+  <script src="rfq-cart.js"></script>
+</body>
+
+</html>
