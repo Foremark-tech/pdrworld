@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0C1220">
+  <title>Fiber Management Selector | PDR World</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="phase5-polish.css">
+  <link rel="stylesheet" href="phase6-final.css">
+  <link rel="stylesheet" href="premium-tools.css">
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <div class="container nav">
+    <a class="brand" href="index.html" aria-label="PDR World home">
+      <span class="brand-mark">PDR</span>
+      <span>PDR World<small>Videotronics India &middot; Since 1985</small></span>
+    </a>
+    <nav class="nav-center" aria-label="Primary">
+      <a href="index.html" id="nav-home">Home</a>
+      <a href="about.html" id="nav-about">About Us</a>
+      <div class="has-mega">
+        <a href="products.html" id="nav-products" aria-haspopup="true">Products
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3 3 3-3"/></svg>
+        </a>
+        <div class="mega" role="menu">
+          <div class="mega-grid">
+            <a href="products.html#passive" data-cat="passive"><strong>Passive Components</strong><span>Patchcords &middot; Armoured &middot; CPRI &middot; Splitters</span></a>
+            <a href="products.html#active" data-cat="active"><strong>Active Components</strong><span>SFP Transceivers &middot; OLP &middot; DAC/AOC</span></a>
+            <a href="products.html#cable" data-cat="cable"><strong>Cable Management</strong><span>ODF &middot; FDB &middot; Closures &middot; Term Boxes</span></a>
+            <a href="products.html#test" data-cat="test"><strong>Test &amp; Measuring</strong><span>OPM &middot; OTDR &middot; Microscopes</span></a>
+            <a href="products.html#specialty" data-cat="specialty"><strong>Specialty &amp; Drones</strong><span>Fiber Drone &middot; Special Assemblies</span></a>
+            <a href="products.html#tools" data-cat="tools"><strong>Maintenance Tools</strong><span>Cleavers &middot; Splicers &middot; Cleaners</span></a>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center">
+            <a href="products.html" style="font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:6px;padding:8px 0">View all Products <span style="font-size:14px">&rarr;</span></a>
+            <span style="font-size:11px;color:#94A3B8;font-weight:500">50+ Product Families &middot; Made in India</span>
+          </div>
+        </div>
+      </div>
+      <div class="has-mega">
+        <a href="cable-configurator.html" id="nav-tools" aria-haspopup="true">Configurator Tools
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3 3 3-3"/></svg>
+        </a>
+        <div class="mega" role="menu" style="width: 320px; right: auto; left: 0; transform: translateX(-20%);">
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <a href="cable-configurator.html" style="padding:16px; border:1px solid var(--line); border-radius:12px; transition:all 0.2s;">
+              <strong style="display:block; font-size:15px; color:var(--ink); margin-bottom:4px;">Custom Cable Builder <span style="font-size:10px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px;">PRO</span></strong>
+              <span style="font-size:13px; color:var(--muted);">Multi-step fiber patchcord wizard</span>
+            </a>
+            <a href="fiber-selector.html" style="padding:16px; border:1px solid var(--line); border-radius:12px; transition:all 0.2s;">
+              <strong style="display:block; font-size:15px; color:var(--ink); margin-bottom:4px;">Fiber Management Selector</strong>
+              <span style="font-size:13px; color:var(--muted);">Filter panels, racks & closures</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <a href="solutions.html" id="nav-solutions">Solutions</a>
+      <a href="resources.html" id="nav-resources">Resources</a>
+      <a href="contact.html" id="nav-contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="btn btn-primary" href="contact.html">Request Quote</a>
+    </div>
+  </div>
+</header>
+
+<main style="padding-top: 120px; padding-bottom: 80px; background:var(--surface-3);">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Interactive Selector</div>
+      <h2>Fiber Management Selector</h2>
+      <p>Filter, configure, and specify rack and wall mount enclosures for your network build.</p>
+    </div>
+
+    <div class="sel-layout">
+      <!-- Left Sidebar Filters -->
+      <div class="sel-sidebar">
+        
+        <div class="sel-filter-group">
+          <h4>Environment</h4>
+          <label class="sel-checkbox"><input type="checkbox" value="Indoor" class="filter-env" checked> Indoor</label>
+          <label class="sel-checkbox"><input type="checkbox" value="Outdoor" class="filter-env" checked> Outdoor / IP65+</label>
+        </div>
+
+        <div class="sel-filter-group">
+          <h4>Mount Type</h4>
+          <label class="sel-checkbox"><input type="checkbox" value="Rack Mount" class="filter-mount" checked> 19" Rack Mount</label>
+          <label class="sel-checkbox"><input type="checkbox" value="Wall Mount" class="filter-mount" checked> Wall Mount</label>
+          <label class="sel-checkbox"><input type="checkbox" value="Pole Mount" class="filter-mount" checked> Pole Mount</label>
+        </div>
+
+        <div class="sel-filter-group">
+          <h4>Max Capacity</h4>
+          <label class="sel-checkbox"><input type="checkbox" value="24" class="filter-cap" checked> Up to 24 Core</label>
+          <label class="sel-checkbox"><input type="checkbox" value="48" class="filter-cap" checked> Up to 48 Core</label>
+          <label class="sel-checkbox"><input type="checkbox" value="96" class="filter-cap" checked> Up to 96 Core</label>
+          <label class="sel-checkbox"><input type="checkbox" value="144" class="filter-cap" checked> 144+ Core (High Density)</label>
+        </div>
+      </div>
+
+      <!-- Right Main Grid -->
+      <div>
+        <div style="margin-bottom: 16px; font-size:14px; color:var(--muted);" id="sel-count">Showing results...</div>
+        <div class="sel-grid" id="sel-results">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="selector-app.js"></script>
+<script src="rfq-cart.js"></script>
+</body>
+</html>
